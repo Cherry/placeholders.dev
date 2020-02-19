@@ -1,6 +1,6 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
 import { getAssetFromKV } from '@cloudflare/kv-asset-handler'; // eslint-disable-line node/no-missing-import
-import generateSVG from '@cloudfour/simple-svg-placeholder';
+import generateSVG from '@cloudfour/simple-svg-placeholder'; // eslint-disable-line node/no-missing-import
 
 const DEBUG = false;
 
