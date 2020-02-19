@@ -1,0 +1,14 @@
+{
+	"root": true,
+	"extends": [
+		"nodecraft"
+	],
+	"plugins": [
+		"json",
+		"node"
+	],
+	"rules": {
+		"no-var": "error",
+		"prefer-const": "error"
+	}
+}

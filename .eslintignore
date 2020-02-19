@@ -1,0 +1,4 @@
+dist/
+node_modules/
+workers-site/node_modules/
+workers-site/worker/**/*.js

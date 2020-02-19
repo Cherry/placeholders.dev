@@ -1,0 +1,19 @@
+name = "placeholders-dev"
+type = "webpack"
+account_id = "522ed7942a6ec29727e101623a48ea76"
+zone_id = "51bfc6eeecc90565bd116ee3ebb5e3a8"
+workers_dev = true
+
+[site]
+bucket = "./public"
+entry-point = "./workers-site"
+
+[env.staging]
+name = "placeholders-staging"
+workers_dev = true
+
+[env.production]
+name = "placeholders"
+workers_dev = false
+routes = ["placeholders.dev/*", "images.placeholders.dev/*"]
+#route = "placeholders.dev/*"

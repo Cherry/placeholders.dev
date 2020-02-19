@@ -1,0 +1,41 @@
+{
+	"name": "placeholders.dev",
+	"version": "1.0.0",
+	"description": "Generate placeholder images with Cloudflare Workers in 200+ edge locations",
+	"keywords": [
+		"placeholders"
+	],
+	"homepage": "https://github.com/Cherry/placeholders.dev#readme",
+	"bugs": {
+		"url": "https://github.com/Cherry/placeholders.dev/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Cherry/placeholders.dev.git"
+	},
+	"license": "MIT",
+	"author": "James Ross <james@jross.me> (https://jross.me)",
+	"scripts": {
+		"lint": "npm run lint:js && npm run lint:json",
+		"lint:js": "eslint .",
+		"lint:js:fix": "eslint . --fix",
+		"lint:json": "eslint \"**/*.json\"",
+		"publish": "wrangler publish --verbose",
+		"publish:preview": "wrangler preview --verbose",
+		"publish:prod": "wrangler publish --env production --verbose",
+		"publish:staging": "wrangler publish --env staging --verbose",
+		"start:dev": "wrangler build && cloudworker workers-site/worker/script.js",
+		"test": "npm run lint"
+	},
+	"devDependencies": {
+		"@cloudflare/wrangler": "1.8.0-rc.1",
+		"@dollarshaveclub/cloudworker": "0.1.2",
+		"eslint": "^6.8.0",
+		"eslint-config-nodecraft": "^1.8.0",
+		"eslint-plugin-json": "^2.0.1",
+		"eslint-plugin-node": "^11.0.0"
+	},
+	"engines": {
+		"node": ">=12"
+	}
+}

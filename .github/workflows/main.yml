@@ -1,0 +1,72 @@
+name: Build
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+
+env:
+  NODE_VERSION: 12.x
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    # always run in pull request, or repository_dispatch. Otherwise (push, etc.) don't run if commit message is skipping CI
+    if: github.event_name == 'pull_request' || github.event_name == 'repository_dispatch' || (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]'))
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Restore NPM cache
+        uses: actions/cache@v1
+        continue-on-error: true
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - run: npm ci
+      - run: npm test
+
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: test
+    # only run if in master. If repository_dispatch always run, else if `schedule` or `push`, only run if not skipping CI
+    if: github.ref == 'refs/heads/master' && (github.event_name == 'repository_dispatch' || (github.event_name == 'schedule' || github.event_name == 'push') && (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')))
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Restore NPM cache
+        uses: actions/cache@v1
+        continue-on-error: true
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build:prod
+
+      - name: Publish
+        # only publish if a direct `push`/`repository_dispatch`, or if we're on a schedule and mcversions or sale data has changed
+        uses: cloudflare/wrangler-action@1.1.0
+        if: github.event_name == 'repository_dispatch' || github.event_name == 'push'
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          environment: 'production'
+          wranglerVersion: 'beta'
+
+      # these folders have secrets/configs in them that prevent the cache from running successfully
+      # TODO: remove when https://github.com/actions/cache/issues/133 has a solution
+      - name: Cleanup old wrangler data
+        continue-on-error: true
+        run: sudo rm -rf ~/.wrangler .wrangler ~/.config .config ~/configstore configstore

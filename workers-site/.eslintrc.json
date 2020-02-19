@@ -1,0 +1,9 @@
+{
+	"parserOptions": {
+		"allowImportExportEverywhere": true,
+		"ecmaFeatures": {
+			"impliedStrict": false
+		},
+		"sourceType": "module"
+	}
+}

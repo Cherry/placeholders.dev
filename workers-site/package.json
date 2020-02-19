@@ -1,0 +1,15 @@
+{
+	"version": "1.0.0",
+	"description": "Cloudflare Worker powering placeholders.dev",
+	"license": "MIT",
+	"author": "James Ross <james@jross.me> (https://jross.me)",
+	"main": "index.js",
+	"dependencies": {
+		"@cloudflare/kv-asset-handler": "0.0.7",
+		"@cloudfour/simple-svg-placeholder": "^1.0.2"
+	},
+	"engines": {
+		"node": ">=12.14.0",
+		"npm": ">=6.9.0"
+	}
+}

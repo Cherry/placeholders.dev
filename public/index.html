@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>placeholders.dev - Super fast image placeholders</title>
+	<meta name="description" content="Generate super fast placeholder images powered by Cloudflare Workers in 200+ edge locations.">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+	<style>
+		html {
+			box-sizing: border-box;
+			font-size: 14px;
+		}
+
+		*, *:before, *:after {
+			box-sizing: inherit;
+		}
+
+		body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+			margin: 0;
+			padding: 0;
+			font-weight: normal;
+		}
+
+		ol, ul {
+			list-style: none;
+		}
+
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+
+		html {
+			font-family: 'Open Sans', sans-serif;
+		}
+
+		pre {
+			white-space: pre-wrap;
+		}
+
+		main {
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+			padding: 0 30px;
+			text-align: center;
+			background: #EDEDED;
+			color: #4B5658;
+		}
+
+		.intro {
+			font-size: 3.75em;
+			font-weight: 600;
+		}
+
+		.tagline {
+			font-size: 1.5rem;
+			margin: 1.5rem 0;
+			font-weight: 100;
+		}
+
+		.documentation {
+			text-align: left;
+			margin: 0 auto;
+			max-width: 75%;
+		}
+
+		.documentation > p {
+			margin: 1em 0;
+		}
+
+		.documentation input {
+			width: 100%;
+			height: 2em;
+			font-size: 1em;
+			font-family: monospace;
+		}
+
+		.examples {
+			margin-bottom: 1em;
+		}
+
+		.icons-social i {
+			font-size: 3em;
+			padding: 10px;
+		}
+
+		.icons-social a {
+			color: #4B5658;
+		}
+
+		.icons-social a svg path{
+			fill: #4B5658;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			main {
+				background: #1b1c1c;
+				color: #dfdfde;
+			}
+
+			.icons-social a {
+				color: #dfdfde;
+			}
+
+			.icons-social a svg path{
+				fill: #dfdfde;
+			}
+
+			a {
+				color: #a9a8a8;
+			}
+		}
+
+		@media (min-width: 576px) {
+			html {
+				font-size: 14px;
+			}
+		}
+
+		@media (min-width: 768px) {
+			html {
+				font-size: 16px;
+			}
+		}
+
+		@media (min-width: 992px) {
+			html {
+				font-size: 18px;
+			}
+		}
+
+		@media (min-width: 1200px) {
+			html {
+				font-size: 20px;
+			}
+		}
+
+		@media (max-width: 768px) {
+			.intro {
+				font-size: 2.5em;
+			}
+
+			.documentation {
+				max-width: 100%;
+			}
+		}
+	</style>
+</head>
+<body>
+	<!-- Based on https://github.com/flexdinesh/dev-landing-page. MIT License -->
+	<main>
+		<div class="intro">placeholders.dev</div>
+		<h1 class="tagline">Generate super-fast placeholder images in 200+ edge locations, powered by Cloudflare Workers</h1>
+		<div class="examples">
+			<img src="https://images.placeholders.dev/?width=350&height=100" loading="lazy" alt="350x150 placeholder image">
+			<img src="https://images.placeholders.dev/?width=200&height=100&bgColor=%23000&textColor=rgba(255,255,255,0.5)" loading="lazy" alt="200x100 placeholder image">
+			<img src="https://images.placeholders.dev/?width=140&height=100&bgColor=%23313131&textColor=%23dfdfde" loading="lazy" alt="140x100 placeholder image">
+			<img src="https://images.placeholders.dev/?width=350&height=100&text=placeholders.dev" loading="lazy" alt="350x100 placeholder image">
+			<img src="https://images.placeholders.dev/?width=1055&height=100&text=Hello World&bgColor=%23434343&textColor=%23dfdfde" loading="lazy" alt="1055x100 placeholder image">
+		</div>
+		<div class="documentation">
+			<h2>Information</h2>
+			<p>placeholders.dev generates custom placeholder images on the fly, such as the examples above. All of these images are generated on Cloudflare's Edge, at 200+ locations, ensuring the best possible performance for all of your users. All images are cached for lengthy periods of time.</p>
+
+			<h3>Available API Options</h3>
+			<dl>
+				<dt><code>width</code></dt>
+				<dd>Width of generated image. Defaults to <code>300</code>.</dd>
+
+				<dt><code>height</code></dt>
+				<dd>Height of generated image. Defaults to <code>150</code>.</dd>
+
+				<dt><code>text</code></dt>
+				<dd>Text to display on generated image. Defaults to the image dimensions.</dd>
+
+				<dt><code>fontFamily</code></dt>
+				<dd>Font to use for the text. Defaults to <code>sans-serif</code>.</dd>
+
+				<dt><code>fontWeight</code></dt>
+				<dd>Font weight to use for the text. Defaults to <code>bold</code>.</dd>
+
+				<dt><code>dy</code></dt>
+				<dd>Adjustment applied to <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dy" target="_blank" rel="noopener">the <code>dy</code> attribute</a> of the text element to appear vertically centered. Defaults to 35% of the font size.</dd>
+
+				<dt><code>bgColor</code></dt>
+				<dd>Background color of the image. Defaults to <code>#ddd</code></dd>
+
+				<dt><code>textColor</code></dt>
+				<dd>Color of the text. For transparency, use an <code>rgba</code> or <code>hsla</code> value. Defaults to <code>rgba(0,0,0,0.5)</code></dd>
+			</dl>
+
+			<h4>Example URL</h4>
+			<pre>https://images.placeholders.dev/?width=350&height=100&text=Hello World&bgColor=%23000</pre>
+		</div>
+		<div class="icons-social">
+			<a target="_blank" href="https://github.com/Cherry/placeholders.dev" aria-label="Placeholders.dev GitHub"><i class="fab fa-github" role="image"></i></a>
+						<a target="_blank" href="https://twitter.com/CherryJimbo" aria-label="James Ross Twitter"><i class="fab fa-twitter" role="image"></i></a>
+		</div>
+	</main>
+</body>
+</html>
