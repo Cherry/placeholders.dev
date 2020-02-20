@@ -17,10 +17,16 @@
 		html {
 			box-sizing: border-box;
 			font-size: 14px;
+			font-family: 'Open Sans', sans-serif;
 		}
 
 		*, *:before, *:after {
 			box-sizing: inherit;
+		}
+
+		body {
+			background: #EDEDED;
+			color: #4B5658;
 		}
 
 		body, h1, h2, h3, h4, h5, h6, p, ol, ul {
@@ -38,18 +44,12 @@
 			height: auto;
 		}
 
-		html {
-			font-family: 'Open Sans', sans-serif;
-		}
-
 		main {
 			display: flex;
 			flex-direction: column;
 			min-height: 100vh;
 			padding: 0 30px;
 			text-align: center;
-			background: #EDEDED;
-			color: #4B5658;
 		}
 
 		.intro {
@@ -98,7 +98,7 @@
 		}
 
 		@media (prefers-color-scheme: dark) {
-			main {
+			body {
 				background: #1b1c1c;
 				color: #dfdfde;
 			}
