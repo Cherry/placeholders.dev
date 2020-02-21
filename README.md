@@ -40,7 +40,7 @@ Example URL: `https://images.placeholders.dev/?width=350&height=100&text=Hello W
 Install it with npm:
 - `npm i @cloudflare/wrangler -g`
 
-After install run `wrangler config` and follow the prompts to add your Wrangler API token. Follow the instructions in [Cloudflare's](https://developers.cloudflare.com/workers/quickstart/#api-token) docs for information on this. You will not need to edit anything in the `wrangler.toml` file - only your own API token, stored externally.
+After install run `wrangler config` and follow the prompts to add your Wrangler API token. Follow the instructions in [Cloudflare's](https://developers.cloudflare.com/workers/quickstart/#api-token) docs for information on this.
 
 
 ### Build
