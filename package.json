@@ -31,8 +31,8 @@
 		"@cloudflare/wrangler": "1.8.0-rc.1",
 		"@dollarshaveclub/cloudworker": "0.1.2",
 		"eslint": "^6.8.0",
-		"eslint-config-nodecraft": "^1.8.0",
-		"eslint-plugin-json": "^2.0.1",
+		"eslint-config-nodecraft": "^2.0.1",
+		"eslint-plugin-json": "^2.1.0",
 		"eslint-plugin-node": "^11.0.0"
 	},
 	"engines": {
