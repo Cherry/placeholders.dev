@@ -20,6 +20,8 @@ placeholders.dev generates custom placeholder images on the fly, such as the exa
 	- Font to use for the text. Defaults to `sans-serif`.
 - `fontWeight`
 	- Font weight to use for the text. Defaults to `bold`.
+- `fontSize`
+	- Font size to use for the text. Defaults to 20% of the shortest image dimension, rounded down.
 - `dy`
 	- Adjustment applied to the dy attribute of the text element to appear vertically centered. Defaults to 35% of the font size.
 - `bgColor`
