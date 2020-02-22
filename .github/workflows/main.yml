@@ -27,7 +27,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - run: npm ci
+      - run: npm ci && cd workers-site && npm ci
       - run: npm test
 
   deploy:
@@ -51,7 +51,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - run: npm ci
+      - run: npm ci && cd workers-site && npm ci
 
       - name: Publish
         # only publish if a direct `push`/`repository_dispatch`

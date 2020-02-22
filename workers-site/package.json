@@ -4,10 +4,13 @@
 	"license": "MIT",
 	"author": "James Ross <james@jross.me> (https://jross.me)",
 	"main": "index.js",
-	"dependencies": {
+	"devDependencies": {
 		"@cloudflare/kv-asset-handler": "0.0.7",
-		"@cloudfour/simple-svg-placeholder": "^1.0.2"
+		"@cloudfour/simple-svg-placeholder": "^1.0.2",
+		"sanitize-html": "1.21.1",
+		"validate-color": "1.0.6"
 	},
+	"dependencies": {},
 	"engines": {
 		"node": ">=12.14.0",
 		"npm": ">=6.9.0"

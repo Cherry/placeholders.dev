@@ -1,6 +1,8 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
-import { getAssetFromKV } from '@cloudflare/kv-asset-handler'; // eslint-disable-line node/no-missing-import
-import generateSVG from '@cloudfour/simple-svg-placeholder'; // eslint-disable-line node/no-missing-import
+import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
+import generateSVG from '@cloudfour/simple-svg-placeholder';
+import sanitizeHtml from "sanitize-html";
+import validateColor from 'validate-color';
 
 const DEBUG = false;
 
@@ -19,12 +21,45 @@ addEventListener('fetch', event => {
 	}
 });
 
+function sanitizeNumber(input){
+	const isValid = !/^\s*$/.test(input) && !Number.isNaN(input);
+	if(isValid){
+		return Number(input);
+	}
+	return null;
+}
+
+function sanitizeString(input){
+	let value = sanitizeHtml(input, {allowedTags: [], allowedAttributes: []});
+	value = value.replace(/["><]+/g, '');
+	return value;
+}
+
+function sanitizeColor(input){
+	const value = sanitizeString(input); // first remove any HTML
+	const isValidColor = validateColor(value);
+	if(isValidColor){
+		return value;
+	}
+	return null;
+}
+const sanitizers = {
+	width: sanitizeNumber,
+	height: sanitizeNumber,
+	text: sanitizeString,
+	dy: sanitizeString,
+	fontFamily: sanitizeString,
+	fontWeight: sanitizeNumber,
+	fontSize: sanitizeNumber,
+	bgColor: sanitizeColor,
+	textColor: sanitizeColor
+};
+
 const cacheTtl = 60 * 60 * 24 * 90; // 90 days
 
 async function handleEvent(event){
 	const url = new URL(event.request.url);
 	url.searchParams.sort(); // improve cache-hits by sorting search params
-	console.log(url.searchParams.toString());
 
 	const options = {};
 	const cache = caches.default; // Cloudflare edge caching
@@ -56,7 +91,15 @@ async function handleEvent(event){
 		// options that can be overwritten
 		for(const key of ['width', 'height', 'text', 'dy', 'fontFamily', 'fontWeight', 'fontSize', 'bgColor', 'textColor']){
 			if(url.searchParams.has(key)){
-				imageOptions[key] = url.searchParams.get(key);
+				let value;
+				if(key in sanitizers){
+					value = sanitizers[key](url.searchParams.get(key));
+				}else{
+					value = url.searchParams.get(key);
+				}
+				if(value){
+					imageOptions[key] = value;
+				}
 			}
 		}
 		response = new Response(generateSVG(imageOptions), {
