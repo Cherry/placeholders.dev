@@ -55,13 +55,47 @@ const sanitizers = {
 	textColor: sanitizeColor
 };
 
+const addHeaders = {
+	"X-XSS-Protection": "1; mode=block",
+	"X-Frame-Options": "DENY",
+	"X-Content-Type-Options": "nosniff",
+	"Referrer-Policy": "no-referrer-when-downgrade",
+	"Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+	"Feature-Policy": [
+		"geolocation 'none';",
+		"midi 'none';",
+		"sync-xhr 'none';",
+		"microphone 'none';",
+		"camera 'none';",
+		"magnetometer 'none';",
+		"gyroscope 'none';",
+		"speaker 'none';",
+		"fullscreen 'none';",
+		"payment 'none';"
+	].join(' '),
+	"Content-Security-Policy": [
+		"default-src 'self';",
+		"script-src 'self' cdnjs.cloudflare.com static.cloudflareinsights.com;",
+		"style-src 'self' fonts.googleapis.com;",
+		"img-src 'self' data:;",
+		"child-src 'none';",
+		"font-src 'self' fonts.gstatic.com;",
+		"connect-src 'self';",
+		"prefetch-src 'none';",
+		"object-src 'none';",
+		"form-action 'none';",
+		"frame-ancestors 'none';",
+		"upgrade-insecure-requests;"
+	].join(' ')
+};
+
 const cacheTtl = 60 * 60 * 24 * 90; // 90 days
+const filesRegex = /(.*\.(ac3|avi|bmp|br|bz2|css|cue|dat|doc|docx|dts|eot|exe|flv|gif|gz|htm|html|ico|img|iso|jpeg|jpg|js|json|map|mkv|mp3|mp4|mpeg|mpg|ogg|pdf|png|ppt|pptx|qt|rar|rm|svg|swf|tar|tgz|ttf|txt|wav|webp|webm|webmanifest|woff|woff2|xls|xlsx|xml|zip))$/;
 
 async function handleEvent(event){
 	const url = new URL(event.request.url);
 	url.searchParams.sort(); // improve cache-hits by sorting search params
 
-	const options = {};
 	const cache = caches.default; // Cloudflare edge caching
 	// when publishing to prod, we serve images from an `images` subdomain
 	// when in dev, we serve from `/api`
@@ -121,14 +155,24 @@ async function handleEvent(event){
 	}
 
 	// else get the assets from KV
+	const options = {
+		cacheControl: {
+			edgeTTL: 60 * 60 * 1, // 1 hour
+			browserTTL: 60 * 60 * 1, // 1 hour
+			bypassCache: false
+		}
+	};
+	if(url.pathname.match(filesRegex)){
+		options.cacheControl.edgeTTL = 60 * 60 * 24 * 30; // 30 days
+		options.cacheControl.browserTTL = 60 * 60 * 24 * 30; // 30 days
+	}
+	let asset = null;
 	try{
 		if(DEBUG){
 			// customize caching
-			options.cacheControl = {
-				bypassCache: true
-			};
+			options.cacheControl.bypassCache = true;
 		}
-		return await getAssetFromKV(event, options);
+		asset = getAssetFromKV(event, options);
 	}catch(e){
 		// if an error is thrown try to serve the asset at 404.html
 		if(!DEBUG){
@@ -143,4 +187,13 @@ async function handleEvent(event){
 
 		return new Response(e.message || e.toString(), { status: 500 });
 	}
+
+	if(asset.headers.get('content-type') === 'text/html'){
+		// set security headers on html pages
+		Object.keys(addHeaders).forEach(name => {
+			asset.headers.set(name, addHeaders[name]);
+		});
+	}
+
+	return asset;
 }
