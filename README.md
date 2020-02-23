@@ -29,7 +29,7 @@ placeholders.dev generates custom placeholder images on the fly, such as the exa
 - `textColor`
 	- Color of the text. For transparency, use an rgba or hsla value. Defaults to `rgba(0,0,0,0.5)`
 
-Example URL: `https://images.placeholders.dev/?width=350&height=100&text=Hello World&bgColor=%23000`
+Example URL: `https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%23#6d6e71`
 ## Dev
 
 ### Prerequisites
