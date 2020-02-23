@@ -76,7 +76,7 @@ const addHeaders = {
 	"Content-Security-Policy": [
 		"default-src 'self';",
 		"script-src 'self' cdnjs.cloudflare.com static.cloudflareinsights.com;",
-		"style-src 'self' fonts.googleapis.com;",
+		"style-src 'self' 'unsafe-inline' fonts.googleapis.com;",
 		"img-src 'self' data:;",
 		"child-src 'none';",
 		"font-src 'self' fonts.gstatic.com;",
@@ -188,7 +188,7 @@ async function handleEvent(event){
 		return new Response(e.message || e.toString(), { status: 500 });
 	}
 
-	if(asset.headers.get('content-type') === 'text/html'){
+	if(asset && asset.headers.get('content-type') === 'text/html'){
 		// set security headers on html pages
 		Object.keys(addHeaders).forEach(name => {
 			asset.headers.set(name, addHeaders[name]);
