@@ -172,7 +172,7 @@ async function handleEvent(event){
 			// customize caching
 			options.cacheControl.bypassCache = true;
 		}
-		asset = getAssetFromKV(event, options);
+		asset = await getAssetFromKV(event, options);
 	}catch(e){
 		// if an error is thrown try to serve the asset at 404.html
 		if(!DEBUG){
