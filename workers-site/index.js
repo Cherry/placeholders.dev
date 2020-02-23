@@ -76,10 +76,10 @@ const addHeaders = {
 	"Content-Security-Policy": [
 		"default-src 'self';",
 		"script-src 'self' cdnjs.cloudflare.com static.cloudflareinsights.com;",
-		"style-src 'self' 'unsafe-inline' fonts.googleapis.com;",
-		"img-src 'self' data:;",
+		"style-src 'self' cdnjs.cloudflare.com 'unsafe-inline' fonts.googleapis.com;",
+		"img-src 'self' data: images.placeholders.dev;",
 		"child-src 'none';",
-		"font-src 'self' fonts.gstatic.com;",
+		"font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com;",
 		"connect-src 'self';",
 		"prefetch-src 'none';",
 		"object-src 'none';",
