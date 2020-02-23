@@ -188,7 +188,7 @@ async function handleEvent(event){
 		return new Response(e.message || e.toString(), { status: 500 });
 	}
 
-	if(asset && asset.headers.get('content-type') === 'text/html'){
+	if(asset && asset.headers && asset.headers.get('content-type') === 'text/html'){
 		// set security headers on html pages
 		Object.keys(addHeaders).forEach(name => {
 			asset.headers.set(name, addHeaders[name]);
