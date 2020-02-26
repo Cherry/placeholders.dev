@@ -60,7 +60,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           environment: 'production'
-          wranglerVersion: 'beta'
 
       # these folders have secrets/configs in them that prevent the cache from running successfully
       # TODO: remove when https://github.com/actions/cache/issues/133 has a solution
