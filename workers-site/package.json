@@ -5,10 +5,10 @@
 	"author": "James Ross <james@jross.me> (https://jross.me)",
 	"main": "index.js",
 	"devDependencies": {
-		"@cloudflare/kv-asset-handler": "0.0.9",
+		"@cloudflare/kv-asset-handler": "^0.0.9",
 		"@cloudfour/simple-svg-placeholder": "^1.0.2",
-		"sanitize-html": "1.22.0",
-		"validate-color": "1.0.6"
+		"sanitize-html": "^1.22.1",
+		"validate-color": "^1.0.6"
 	},
 	"dependencies": {},
 	"engines": {
