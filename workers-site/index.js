@@ -1,25 +1,10 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
-import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
+import {getAssetFromKV} from '@cloudflare/kv-asset-handler';
 import generateSVG from '@cloudfour/simple-svg-placeholder';
 import sanitizeHtml from "sanitize-html";
 import validateColor from 'validate-color';
 
 const DEBUG = false;
-
-addEventListener('fetch', event => {
-	try{
-		event.respondWith(handleEvent(event));
-	}catch(e){
-		if(DEBUG){
-			return event.respondWith(
-				new Response(e.message || e.toString(), {
-					status: 500
-				})
-			);
-		}
-		event.respondWith(new Response('Internal Error', { status: 500 }));
-	}
-});
 
 function sanitizeNumber(input){
 	const isValid = !/^\s*$/.test(input) && !Number.isNaN(input);
@@ -181,19 +166,34 @@ async function handleEvent(event){
 					mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req)
 				});
 
-				return new Response(notFoundResponse.body, { ...notFoundResponse, status: 404 });
+				return new Response(notFoundResponse.body, {...notFoundResponse, status: 404});
 			}catch(e){}
 		}
 
-		return new Response(e.message || e.toString(), { status: 500 });
+		return new Response(e.message || e.toString(), {status: 500});
 	}
 
 	if(asset && asset.headers && asset.headers.get('content-type') === 'text/html'){
 		// set security headers on html pages
-		Object.keys(addHeaders).forEach(name => {
+		Object.keys(addHeaders).forEach((name) => {
 			asset.headers.set(name, addHeaders[name]);
 		});
 	}
 
 	return asset;
 }
+
+addEventListener('fetch', (event) => {
+	try{
+		event.respondWith(handleEvent(event));
+	}catch(e){
+		if(DEBUG){
+			return event.respondWith(
+				new Response(e.message || e.toString(), {
+					status: 500
+				})
+			);
+		}
+		event.respondWith(new Response('Internal Error', {status: 500}));
+	}
+});

@@ -28,12 +28,12 @@
 		"test": "npm run lint"
 	},
 	"devDependencies": {
-		"@cloudflare/wrangler": "^1.8.1",
+		"@cloudflare/wrangler": "^1.8.4",
 		"@dollarshaveclub/cloudworker": "^0.1.2",
 		"eslint": "^6.8.0",
-		"eslint-config-nodecraft": "^2.1.4",
+		"eslint-config-nodecraft": "^3.0.2",
 		"eslint-plugin-json": "^2.1.1",
-		"eslint-plugin-node": "^11.0.0"
+		"eslint-plugin-node": "^11.1.0"
 	},
 	"engines": {
 		"node": ">=12"
