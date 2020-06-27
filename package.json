@@ -24,14 +24,13 @@
 		"publish:preview": "wrangler preview --verbose",
 		"publish:prod": "wrangler publish --env production --verbose",
 		"publish:staging": "wrangler publish --env staging --verbose",
-		"start:dev": "wrangler build && cloudworker workers-site/worker/script.js",
+		"start:dev": "wrangler dev",
 		"test": "npm run lint"
 	},
 	"devDependencies": {
-		"@cloudflare/wrangler": "^1.9.2",
-		"@dollarshaveclub/cloudworker": "^0.1.2",
-		"eslint": "^7.1.0",
-		"eslint-config-nodecraft": "^4.0.0",
+		"@cloudflare/wrangler": "^1.10.3",
+		"eslint": "^7.3.1",
+		"eslint-config-nodecraft": "^4.1.0",
 		"eslint-plugin-json": "^2.1.1",
 		"eslint-plugin-node": "^11.1.0"
 	},
