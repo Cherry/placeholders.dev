@@ -16,7 +16,7 @@ function sanitizeNumber(input){
 
 function sanitizeString(input){
 	let value = sanitizeHtml(input, {allowedTags: [], allowedAttributes: []});
-	value = value.replace(/["><]+/g, '');
+	value = value.replace(/["<>]+/g, '');
 	return value;
 }
 
@@ -167,7 +167,7 @@ async function handleEvent(event){
 				});
 
 				return new Response(notFoundResponse.body, {...notFoundResponse, status: 404});
-			}catch(e){}
+			}catch{}
 		}
 
 		return new Response(e.message || e.toString(), {status: 500});
