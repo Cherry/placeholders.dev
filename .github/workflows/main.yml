@@ -5,7 +5,7 @@ on:
   repository_dispatch:
 
 env:
-  NODE_VERSION: 12.x
+  NODE_VERSION: 14.x
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -14,12 +14,12 @@ jobs:
     if: github.event_name == 'pull_request' || github.event_name == 'repository_dispatch' || (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]'))
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Restore NPM cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         continue-on-error: true
         with:
           path: ~/.npm
@@ -34,16 +34,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     needs: test
-    # only run if in master. If repository_dispatch always run, else if `schedule` or `push`, only run if not skipping CI
-    if: github.ref == 'refs/heads/master' && (github.event_name == 'repository_dispatch' || (github.event_name == 'schedule' || github.event_name == 'push') && (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')))
+    # only run if in main. If repository_dispatch always run, else if `schedule` or `push`, only run if not skipping CI
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'repository_dispatch' || (github.event_name == 'schedule' || github.event_name == 'push') && (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')))
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Restore NPM cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         continue-on-error: true
         with:
           path: ~/.npm
@@ -54,7 +54,7 @@ jobs:
       - run: npm ci && cd workers-site && npm ci
 
       - name: Publish
-        uses: cloudflare/wrangler-action@1.2.0
+        uses: cloudflare/wrangler-action@1.3.0
         # only publish if a direct `push`/`repository_dispatch`
         # publish non-production deploy if it's a fork
         if: github.event_name == 'repository_dispatch' || github.event_name == 'push' && github.repository_owner != 'Cherry'
@@ -64,7 +64,7 @@ jobs:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: Publish (production)
-        uses: cloudflare/wrangler-action@1.2.0
+        uses: cloudflare/wrangler-action@1.3.0
         # only publish if a direct `push`/`repository_dispatch`
         # publish production deploy if it's the original repository
         if: github.event_name == 'repository_dispatch' || github.event_name == 'push' && github.repository_owner == 'Cherry'
@@ -74,8 +74,3 @@ jobs:
         env:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
-      # these folders have secrets/configs in them that prevent the cache from running successfully
-      # TODO: remove when https://github.com/actions/cache/issues/133 has a solution
-      - name: Cleanup old wrangler data
-        continue-on-error: true
-        run: sudo rm -rf ~/.wrangler .wrangler ~/.config .config ~/configstore configstore

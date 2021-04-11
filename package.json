@@ -28,14 +28,14 @@
 		"test": "npm run lint"
 	},
 	"devDependencies": {
-		"@cloudflare/wrangler": "^1.12.3",
-		"eslint": "^7.17.0",
-		"eslint-config-nodecraft": "^7.1.0",
+		"@cloudflare/wrangler": "^1.15.0",
+		"@nodecraft/eslint-config": "^7.7.0",
+		"eslint": "^7.24.0",
 		"eslint-plugin-json": "^2.1.2",
 		"eslint-plugin-node": "^11.1.0",
-		"eslint-plugin-unicorn": "^25.0.1"
+		"eslint-plugin-unicorn": "^29.0.0"
 	},
 	"engines": {
-		"node": ">=12"
+		"node": ">=14"
 	}
 }

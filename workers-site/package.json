@@ -5,9 +5,9 @@
 	"author": "James Ross <james@jross.me> (https://jross.me)",
 	"main": "index.js",
 	"devDependencies": {
-		"@cloudflare/kv-asset-handler": "^0.1.0",
+		"@cloudflare/kv-asset-handler": "^0.1.1",
 		"@cloudfour/simple-svg-placeholder": "^1.0.2",
-		"sanitize-html": "^2.3.0",
+		"sanitize-html": "^2.3.3",
 		"validate-color": "^2.1.1"
 	},
 	"dependencies": {},

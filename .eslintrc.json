@@ -1,14 +1,11 @@
 {
 	"root": true,
 	"extends": [
-		"nodecraft"
+		"@nodecraft"
 	],
 	"plugins": [
+		"unicorn",
 		"json",
 		"node"
-	],
-	"rules": {
-		"no-var": "error",
-		"prefer-const": "error"
-	}
+	]
 }

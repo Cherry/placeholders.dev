@@ -147,7 +147,7 @@ async function handleEvent(event){
 			bypassCache: false
 		}
 	};
-	if(url.pathname.match(filesRegex)){
+	if(filesRegex.test(url.pathname)){
 		options.cacheControl.edgeTTL = 60 * 60 * 24 * 30; // 30 days
 		options.cacheControl.browserTTL = 60 * 60 * 24 * 30; // 30 days
 	}
@@ -158,7 +158,7 @@ async function handleEvent(event){
 			options.cacheControl.bypassCache = true;
 		}
 		asset = await getAssetFromKV(event, options);
-	}catch(e){
+	}catch(err){
 		// if an error is thrown try to serve the asset at 404.html
 		if(!DEBUG){
 			try{
@@ -170,14 +170,14 @@ async function handleEvent(event){
 			}catch{}
 		}
 
-		return new Response(e.message || e.toString(), {status: 500});
+		return new Response(err.message || err.toString(), {status: 500});
 	}
 
 	if(asset && asset.headers && asset.headers.has('content-type') && asset.headers.get('content-type').includes('text/html')){
 		// set security headers on html pages
-		Object.keys(addHeaders).forEach((name) => {
+		for(const name of Object.keys(addHeaders)){
 			asset.headers.set(name, addHeaders[name]);
-		});
+		}
 	}
 
 	return asset;
@@ -186,10 +186,10 @@ async function handleEvent(event){
 addEventListener('fetch', (event) => {
 	try{
 		event.respondWith(handleEvent(event));
-	}catch(e){
+	}catch(err){
 		if(DEBUG){
 			return event.respondWith(
-				new Response(e.message || e.toString(), {
+				new Response(err.message || err.toString(), {
 					status: 500
 				})
 			);
