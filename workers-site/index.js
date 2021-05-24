@@ -37,7 +37,7 @@ const sanitizers = {
 	fontWeight: sanitizeNumber,
 	fontSize: sanitizeNumber,
 	bgColor: sanitizeColor,
-	textColor: sanitizeColor
+	textColor: sanitizeColor,
 };
 
 const addHeaders = {
@@ -56,7 +56,7 @@ const addHeaders = {
 		"gyroscope 'none';",
 		"speaker 'none';",
 		"fullscreen 'none';",
-		"payment 'none';"
+		"payment 'none';",
 	].join(' '),
 	"Content-Security-Policy": [
 		"default-src 'self';",
@@ -70,8 +70,8 @@ const addHeaders = {
 		"object-src 'none';",
 		"form-action 'none';",
 		"frame-ancestors 'none';",
-		"upgrade-insecure-requests;"
-	].join(' ')
+		"upgrade-insecure-requests;",
+	].join(' '),
 };
 
 const cacheTtl = 60 * 60 * 24 * 90; // 90 days
@@ -94,7 +94,7 @@ async function handleEvent(event){
 			return new Response(response.body, {
 				status: response.status,
 				statusText: response.statusText,
-				headers: newHdrs
+				headers: newHdrs,
 			});
 		}
 		const imageOptions = {
@@ -104,7 +104,7 @@ async function handleEvent(event){
 			fontFamily: 'sans-serif',
 			fontWeight: 'bold',
 			bgColor: '#ddd',
-			textColor: 'rgba(0,0,0,0.5)'
+			textColor: 'rgba(0,0,0,0.5)',
 		};
 
 		// options that can be overwritten
@@ -123,8 +123,8 @@ async function handleEvent(event){
 		}
 		response = new Response(generateSVG(imageOptions), {
 			headers: {
-				'content-type': 'image/svg+xml; charset=utf-8'
-			}
+				'content-type': 'image/svg+xml; charset=utf-8',
+			},
 		});
 
 		// set cache header on 200 response
@@ -144,8 +144,8 @@ async function handleEvent(event){
 		cacheControl: {
 			edgeTTL: 60 * 60 * 1, // 1 hour
 			browserTTL: 60 * 60 * 1, // 1 hour
-			bypassCache: false
-		}
+			bypassCache: false,
+		},
 	};
 	if(filesRegex.test(url.pathname)){
 		options.cacheControl.edgeTTL = 60 * 60 * 24 * 30; // 30 days
@@ -163,7 +163,7 @@ async function handleEvent(event){
 		if(!DEBUG){
 			try{
 				const notFoundResponse = await getAssetFromKV(event, {
-					mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req)
+					mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req),
 				});
 
 				return new Response(notFoundResponse.body, {...notFoundResponse, status: 404});
@@ -190,8 +190,8 @@ addEventListener('fetch', (event) => {
 		if(DEBUG){
 			return event.respondWith(
 				new Response(err.message || err.toString(), {
-					status: 500
-				})
+					status: 500,
+				}),
 			);
 		}
 		event.respondWith(new Response('Internal Error', {status: 500}));
