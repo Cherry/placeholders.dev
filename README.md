@@ -9,6 +9,9 @@ Generate super-fast placeholder images in 200+ edge locations, powered by Cloudf
 
 placeholders.dev generates custom placeholder images on the fly, such as the examples above. All of these images are generated on Cloudflare's Edge, at 200+ locations, ensuring the best possible performance for all of your users. All images are cached for lengthy periods of time.
 
+## Technology
+
+This project makes use of Cloudflare Workers, and Cloudflare Workers Sites via Workers KV. It also implements a HTMLRewriter to update the total Cloudflare PoPs in multiple locations.
 ### Available API Options
 
 - `width`

@@ -1,45 +1,14 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
 import {getAssetFromKV} from '@cloudflare/kv-asset-handler';
 import generateSVG from '@cloudfour/simple-svg-placeholder';
-import sanitizeHtml from "sanitize-html";
-import validateColor from 'validate-color';
+import PoPs from "@adaptivelink/pops";
+
+import {sanitizers} from './sanitizers.js';
+
+const CloudflarePoPs = PoPs.cloudflare.code.length;
 
 const DEBUG = false;
 
-function sanitizeNumber(input){
-	const isValid = !/^\s*$/.test(input) && !Number.isNaN(input);
-	if(isValid){
-		return Number(input);
-	}
-	return null;
-}
-
-function sanitizeString(input){
-	let value = sanitizeHtml(input, {allowedTags: [], allowedAttributes: []});
-	value = value.replace(/["<>]+/g, '');
-	return value;
-}
-
-function sanitizeColor(input){
-	const value = sanitizeString(input); // first remove any HTML
-	const isValidColor = validateColor(value);
-	if(isValidColor){
-		return value;
-	}
-	return null;
-}
-const sanitizers = {
-	width: sanitizeNumber,
-	height: sanitizeNumber,
-	text: sanitizeString,
-	dy: sanitizeString,
-	fontFamily: sanitizeString,
-	fontWeight: sanitizeNumber,
-	fontSize: sanitizeNumber,
-	bgColor: sanitizeColor,
-	textColor: sanitizeColor,
-};
-
+/* security headers */
 const addHeaders = {
 	"X-XSS-Protection": "1; mode=block",
 	"X-Frame-Options": "DENY",
@@ -74,6 +43,21 @@ const addHeaders = {
 	].join(' '),
 };
 
+/* HTML rewriter for more accurate count of Cloudflare PoPs */
+const description = `Generate super fast placeholder images powered by Cloudflare Workers in ${CloudflarePoPs}+ edge locations.`;
+class PoPsRewriter {
+	element(element){
+		if(element.tagName === 'title'){
+			element.setInnerContent(description);
+		}else if(element.tagName === 'meta' && (element.getAttribute('name') === 'description' || element.getAttribute('name') === 'twitter:description' || element.getAttribute('property') === 'og:description')){
+			element.setAttribute('content', description);
+		}else if(element.tagName === 'span' && element.hasAttribute('class') && element.getAttribute('class').includes('edgeLocations')){
+			element.setInnerContent(String(CloudflarePoPs));
+		}
+	}
+}
+
+/* caching */
 const cacheTtl = 60 * 60 * 24 * 90; // 90 days
 const filesRegex = /(.*\.(ac3|avi|bmp|br|bz2|css|cue|dat|doc|docx|dts|eot|exe|flv|gif|gz|htm|html|ico|img|iso|jpeg|jpg|js|json|map|mkv|mp3|mp4|mpeg|mpg|ogg|pdf|png|ppt|pptx|qt|rar|rm|svg|swf|tar|tgz|ttf|txt|wav|webp|webm|webmanifest|woff|woff2|xls|xlsx|xml|zip))$/;
 
@@ -180,7 +164,8 @@ async function handleEvent(event){
 		}
 	}
 
-	return asset;
+	const transformed = new HTMLRewriter().on('*', new PoPsRewriter()).transform(asset);
+	return transformed;
 }
 
 addEventListener('fetch', (event) => {

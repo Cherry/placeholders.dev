@@ -5,7 +5,8 @@
 	"author": "James Ross <james@jross.me> (https://jross.me)",
 	"main": "index.js",
 	"devDependencies": {
-		"@cloudflare/kv-asset-handler": "^0.1.2",
+		"@adaptivelink/pops": "^0.3.7",
+		"@cloudflare/kv-asset-handler": "^0.1.3",
 		"@cloudfour/simple-svg-placeholder": "^1.0.2",
 		"sanitize-html": "^2.4.0",
 		"validate-color": "^2.1.1"
