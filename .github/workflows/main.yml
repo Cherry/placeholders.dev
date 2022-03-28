@@ -5,7 +5,7 @@ on:
   repository_dispatch:
 
 env:
-  NODE_VERSION: 14.x
+  NODE_VERSION: 16.x
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,13 +13,13 @@ jobs:
     # always run in pull request, or repository_dispatch. Otherwise (push, etc.) don't run if commit message is skipping CI
     if: github.event_name == 'pull_request' || github.event_name == 'repository_dispatch' || (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]'))
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Restore NPM cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         continue-on-error: true
         with:
           path: ~/.npm
@@ -37,13 +37,13 @@ jobs:
     # only run if in main. If repository_dispatch always run, else if `schedule` or `push`, only run if not skipping CI
     if: github.ref == 'refs/heads/main' && (github.event_name == 'repository_dispatch' || (github.event_name == 'schedule' || github.event_name == 'push') && (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')))
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Restore NPM cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         continue-on-error: true
         with:
           path: ~/.npm
