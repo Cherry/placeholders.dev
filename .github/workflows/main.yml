@@ -27,7 +27,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - run: npm ci && cd workers-site && npm ci
+      - run: npm ci
       - run: npm test
 
   deploy:
@@ -51,7 +51,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - run: npm ci && cd workers-site && npm ci
+      - run: npm ci
 
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
@@ -61,8 +61,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           command: "publish"
-        env:
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
       - name: Publish (production)
         uses: cloudflare/wrangler-action@2.0.0
@@ -72,6 +70,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           command: "publish --env=production"
-        env:
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 

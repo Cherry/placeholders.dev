@@ -17,7 +17,7 @@ node_compat = true
 name = "placeholders"
 workers_dev = false
 routes = [
-	{pattern = "placeholders.dev/*", zone_name = "placeholders.dev"},
-	{pattern = "images.placeholders.dev/*", zone_name = "placeholders.dev"}
+	{pattern = "placeholders.dev/*", zone_id = "51bfc6eeecc90565bd116ee3ebb5e3a8"},
+	{pattern = "images.placeholders.dev/*", zone_id = "51bfc6eeecc90565bd116ee3ebb5e3a8"}
 ]
 node_compat = true
