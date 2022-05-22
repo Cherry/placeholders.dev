@@ -1,19 +1,23 @@
 name = "placeholders-dev"
-type = "webpack"
 account_id = "522ed7942a6ec29727e101623a48ea76"
-zone_id = "51bfc6eeecc90565bd116ee3ebb5e3a8"
 workers_dev = true
+compatibility_date = "2022-04-22"
+main = "./workers-site/index.js"
+node_compat = true
 
 [site]
 bucket = "./public"
-entry-point = "./workers-site"
 
 [env.staging]
 name = "placeholders-staging"
 workers_dev = true
+node_compat = true
 
 [env.production]
 name = "placeholders"
 workers_dev = false
-routes = ["placeholders.dev/*", "images.placeholders.dev/*"]
-#route = "placeholders.dev/*"
+routes = [
+	{pattern = "placeholders.dev/*", zone_name = "placeholders.dev"},
+	{pattern = "images.placeholders.dev/*", zone_name = "placeholders.dev"}
+]
+node_compat = true

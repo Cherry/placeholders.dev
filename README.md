@@ -1,5 +1,5 @@
 # [placeholders.dev](https://placeholders.dev)
-Generate super-fast placeholder images in 200+ edge locations, powered by Cloudflare Workers
+Generate super-fast placeholder images in 270+ edge locations, powered by Cloudflare Workers
 ![350x150 placeholder image](https://images.placeholders.dev/?width=350&amp;height=100)![200x100 placeholder image](https://images.placeholders.dev/?width=200&amp;height=100&amp;bgColor=%23000&amp;textColor=rgba(255,255,255,0.5))![140x100 placeholder image](https://images.placeholders.dev/?width=140&amp;height=100&amp;bgColor=%23313131&amp;textColor=%23dfdfde)
 ![1055x100 placeholder image](https://images.placeholders.dev/?width=1055&amp;height=100&amp;text=Hello%20World&amp;bgColor=%23434343&amp;textColor=%23dfdfde)
 

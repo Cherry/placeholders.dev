@@ -16,6 +16,7 @@
 	"license": "MIT",
 	"author": "James Ross <james@jross.me> (https://jross.me)",
 	"scripts": {
+		"dev": "wrangler dev",
 		"lint": "npm run lint:js && npm run lint:json",
 		"lint:js": "eslint .",
 		"lint:js:fix": "eslint . --fix",
@@ -28,15 +29,19 @@
 		"test": "npm run lint"
 	},
 	"devDependencies": {
-		"@cloudflare/wrangler": "^1.19.11",
-		"@nodecraft/eslint-config": "^16.0.0",
-		"eslint": "^8.12.0",
-		"eslint-plugin-json": "^3.1.0",
-		"eslint-plugin-node": "^11.1.0",
-		"eslint-plugin-unicorn": "^41.0.1",
-		"miniflare": "^2.3.0"
+		"@adaptivelink/pops": "0.4.17",
+		"@cloudflare/kv-asset-handler": "0.2.0",
+		"@cloudfour/simple-svg-placeholder": "1.0.2",
+		"@nodecraft/eslint-config": "18.0.0",
+		"eslint": "8.16.0",
+		"eslint-plugin-json": "3.1.0",
+		"eslint-plugin-node": "11.1.0",
+		"eslint-plugin-unicorn": "42.0.0",
+		"sanitize-html": "2.7.0",
+		"validate-color": "2.2.1",
+		"wrangler": "2.0.6"
 	},
 	"engines": {
-		"node": ">=14"
+		"node": ">=16"
 	}
 }
