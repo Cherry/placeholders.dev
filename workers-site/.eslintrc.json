@@ -1,15 +1,5 @@
 {
 	"parserOptions": {
-		"allowImportExportEverywhere": true,
-		"ecmaFeatures": {
-			"impliedStrict": false
-		},
 		"sourceType": "module"
-	},
-	"globals": {
-		"HTMLRewriter": false
-	},
-	"rules": {
-		"node/no-unsupported-features/es-syntax": "off"
 	}
 }

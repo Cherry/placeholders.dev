@@ -164,6 +164,7 @@ async function handleEvent(event){
 		}
 	}
 
+	/* global HTMLRewriter */
 	const transformed = new HTMLRewriter().on('*', new PoPsRewriter()).transform(asset);
 	return transformed;
 }
