@@ -60,6 +60,7 @@ jobs:
         if: github.event_name == 'repository_dispatch' || github.event_name == 'push' && github.repository_owner != 'Cherry'
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: "publish"
 
       - name: Publish (production)
@@ -69,5 +70,6 @@ jobs:
         if: github.event_name == 'repository_dispatch' || github.event_name == 'push' && github.repository_owner == 'Cherry'
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: "publish --env=production"
 

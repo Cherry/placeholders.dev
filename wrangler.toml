@@ -1,5 +1,4 @@
 name = "placeholders-dev"
-account_id = "522ed7942a6ec29727e101623a48ea76"
 workers_dev = true
 compatibility_date = "2022-04-22"
 main = "./workers-site/index.js"
