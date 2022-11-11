@@ -29,17 +29,17 @@
 		"test": "npm run lint"
 	},
 	"devDependencies": {
-		"@adaptivelink/pops": "0.4.18",
+		"@adaptivelink/pops": "0.4.23",
 		"@cloudflare/kv-asset-handler": "0.2.0",
-		"@cloudfour/simple-svg-placeholder": "1.0.2",
-		"@nodecraft/eslint-config": "19.0.0",
-		"eslint": "8.23.0",
+		"@cloudfour/simple-svg-placeholder": "1.1.0",
+		"@nodecraft/eslint-config": "21.0.0",
+		"eslint": "8.27.0",
 		"eslint-plugin-json": "3.1.0",
 		"eslint-plugin-node": "11.1.0",
-		"eslint-plugin-unicorn": "43.0.2",
-		"sanitize-html": "2.7.1",
+		"eslint-plugin-unicorn": "44.0.2",
+		"sanitize-html": "2.7.3",
 		"validate-color": "2.2.1",
-		"wrangler": "2.0.28"
+		"wrangler": "2.2.0"
 	},
 	"engines": {
 		"node": ">=16"
