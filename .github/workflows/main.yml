@@ -67,7 +67,7 @@ jobs:
         uses: cloudflare/wrangler-action@2.0.0
         # only publish if a direct `push`/`repository_dispatch`
         # publish production deploy if it's the original repository
-        if: github.event_name == 'repository_dispatch' || github.event_name == 'push' && github.repository_owner == 'Cherry'
+        if: (github.event_name == 'repository_dispatch' || github.event_name == 'push') && github.repository_owner == 'Cherry'
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
