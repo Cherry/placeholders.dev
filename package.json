@@ -39,7 +39,7 @@
 		"eslint-plugin-unicorn": "47.0.0",
 		"sanitize-html": "2.10.0",
 		"validate-color": "2.2.4",
-		"wrangler": "2.20.0"
+		"wrangler": "2.20.1"
 	},
 	"engines": {
 		"node": ">=16"
