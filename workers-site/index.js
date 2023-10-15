@@ -150,7 +150,12 @@ async function handleEvent(event) {
 					mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req),
 				});
 
-				return new Response(notFoundResponse.body, {...notFoundResponse, status: 404});
+				const headers = new Headers(notFoundResponse.headers);
+				headers.set('content-type', 'text/html; charset=utf-8');
+				return new Response(notFoundResponse.body, {
+					headers,
+					status: 404,
+				});
 			}catch{}
 		}
 
