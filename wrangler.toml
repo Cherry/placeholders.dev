@@ -20,3 +20,4 @@ routes = [
 	{pattern = "images.placeholders.dev/*", zone_id = "51bfc6eeecc90565bd116ee3ebb5e3a8"}
 ]
 node_compat = true
+logpush = true

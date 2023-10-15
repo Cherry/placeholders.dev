@@ -29,15 +29,15 @@
 		"test": "npm run lint"
 	},
 	"devDependencies": {
-		"@adaptivelink/pops": "0.5.4",
+		"@adaptivelink/pops": "0.5.7",
 		"@cloudflare/kv-asset-handler": "0.3.0",
 		"@cloudfour/simple-svg-placeholder": "1.1.0",
-		"@nodecraft/eslint-config": "25.0.1",
-		"eslint": "8.41.0",
+		"@nodecraft/eslint-config": "28.0.0",
+		"eslint": "8.51.0",
 		"eslint-plugin-json": "3.1.0",
 		"eslint-plugin-node": "11.1.0",
-		"eslint-plugin-unicorn": "47.0.0",
-		"sanitize-html": "2.10.0",
+		"eslint-plugin-unicorn": "48.0.1",
+		"sanitize-html": "2.11.0",
 		"validate-color": "2.2.4",
 		"wrangler": "2.20.1"
 	},
