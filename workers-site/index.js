@@ -1,8 +1,8 @@
-import {getAssetFromKV} from '@cloudflare/kv-asset-handler';
-import generateSVG from '@cloudfour/simple-svg-placeholder';
 import PoPs from '@adaptivelink/pops';
+import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
+import generateSVG from '@cloudfour/simple-svg-placeholder';
 
-import {sanitizers} from './sanitizers.js';
+import { sanitizers } from './sanitizers.js';
 
 const CloudflarePoPs = PoPs.cloudflare.code.length;
 
@@ -47,11 +47,11 @@ const addHeaders = {
 const description = `Generate super fast placeholder images powered by Cloudflare Workers in ${CloudflarePoPs}+ edge locations.`;
 class PoPsRewriter {
 	element(element) {
-		if(element.tagName === 'title') {
+		if (element.tagName === 'title') {
 			element.setInnerContent(description);
-		}else if(element.tagName === 'meta' && (element.getAttribute('name') === 'description' || element.getAttribute('name') === 'twitter:description' || element.getAttribute('property') === 'og:description')) {
+		} else if (element.tagName === 'meta' && (element.getAttribute('name') === 'description' || element.getAttribute('name') === 'twitter:description' || element.getAttribute('property') === 'og:description')) {
 			element.setAttribute('content', description);
-		}else if(element.tagName === 'span' && element.hasAttribute('class') && element.getAttribute('class').includes('edgeLocations')) {
+		} else if (element.tagName === 'span' && element.hasAttribute('class') && element.getAttribute('class').includes('edgeLocations')) {
 			element.setInnerContent(String(CloudflarePoPs));
 		}
 	}
@@ -68,10 +68,10 @@ async function handleEvent(event) {
 	const cache = caches.default; // Cloudflare edge caching
 	// when publishing to prod, we serve images from an `images` subdomain
 	// when in dev, we serve from `/api`
-	if(url.host === 'images.placeholders.dev' || url.pathname.startsWith('/api')) {
+	if (url.host === 'images.placeholders.dev' || url.pathname.startsWith('/api')) {
 		// do our API work
-		let response = await cache.match(url, {ignoreMethod: true}); // try to find match for this request in the edge cache
-		if(response) {
+		let response = await cache.match(url, { ignoreMethod: true }); // try to find match for this request in the edge cache
+		if (response) {
 			// use cache found on Cloudflare edge. Set X-Worker-Cache header for helpful debug
 			const newHdrs = new Headers(response.headers);
 			newHdrs.set('X-Worker-Cache', 'true');
@@ -92,15 +92,15 @@ async function handleEvent(event) {
 		};
 
 		// options that can be overwritten
-		for(const key of ['width', 'height', 'text', 'dy', 'fontFamily', 'fontWeight', 'fontSize', 'bgColor', 'textColor']) {
-			if(url.searchParams.has(key)) {
+		for (const key of ['width', 'height', 'text', 'dy', 'fontFamily', 'fontWeight', 'fontSize', 'bgColor', 'textColor']) {
+			if (url.searchParams.has(key)) {
 				let value;
-				if(key in sanitizers) {
+				if (key in sanitizers) {
 					value = sanitizers[key](url.searchParams.get(key));
-				}else{
+				} else {
 					value = url.searchParams.get(key);
 				}
-				if(value) {
+				if (value) {
 					imageOptions[key] = value;
 				}
 			}
@@ -108,13 +108,14 @@ async function handleEvent(event) {
 		response = new Response(generateSVG(imageOptions), {
 			headers: {
 				'content-type': 'image/svg+xml; charset=utf-8',
+				'access-control-allow-origin': '*',
 			},
 		});
 
 		// set cache header on 200 response
-		if(response.status === 200) {
+		if (response.status === 200) {
 			response.headers.set('Cache-Control', 'public, max-age=' + cacheTtl);
-		}else{
+		} else {
 			// only cache other things for 5 minutes (errors, 404s, etc.)
 			response.headers.set('Cache-Control', 'public, max-age=300');
 		}
@@ -131,21 +132,21 @@ async function handleEvent(event) {
 			bypassCache: false,
 		},
 	};
-	if(filesRegex.test(url.pathname)) {
+	if (filesRegex.test(url.pathname)) {
 		options.cacheControl.edgeTTL = 60 * 60 * 24 * 30; // 30 days
 		options.cacheControl.browserTTL = 60 * 60 * 24 * 30; // 30 days
 	}
 	let asset = null;
-	try{
-		if(DEBUG) {
+	try {
+		if (DEBUG) {
 			// customize caching
 			options.cacheControl.bypassCache = true;
 		}
 		asset = await getAssetFromKV(event, options);
-	}catch(err) {
+	} catch (err) {
 		// if an error is thrown try to serve the asset at 404.html
-		if(!DEBUG) {
-			try{
+		if (!DEBUG) {
+			try {
 				const notFoundResponse = await getAssetFromKV(event, {
 					mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req),
 				});
@@ -156,15 +157,15 @@ async function handleEvent(event) {
 					headers,
 					status: 404,
 				});
-			}catch{}
+			} catch {}
 		}
 
-		return new Response(err.message || err.toString(), {status: 500});
+		return new Response(err.message || err.toString(), { status: 500 });
 	}
 
-	if(asset && asset.headers && asset.headers.has('content-type') && asset.headers.get('content-type').includes('text/html')) {
+	if (asset && asset.headers && asset.headers.has('content-type') && asset.headers.get('content-type').includes('text/html')) {
 		// set security headers on html pages
-		for(const name of Object.keys(addHeaders)) {
+		for (const name of Object.keys(addHeaders)) {
 			asset.headers.set(name, addHeaders[name]);
 		}
 	}
@@ -175,16 +176,16 @@ async function handleEvent(event) {
 }
 
 addEventListener('fetch', (event) => {
-	try{
+	try {
 		event.respondWith(handleEvent(event));
-	}catch(err) {
-		if(DEBUG) {
+	} catch (err) {
+		if (DEBUG) {
 			return event.respondWith(
 				new Response(err.message || err.toString(), {
 					status: 500,
 				}),
 			);
 		}
-		event.respondWith(new Response('Internal Error', {status: 500}));
+		event.respondWith(new Response('Internal Error', { status: 500 }));
 	}
 });

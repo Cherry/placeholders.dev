@@ -3,14 +3,14 @@ import validateColor from 'validate-color';
 
 function sanitizeNumber(input) {
 	const isValid = !/^\s*$/.test(input) && !Number.isNaN(input);
-	if(isValid) {
+	if (isValid) {
 		return Number(input);
 	}
 	return null;
 }
 
 function sanitizeString(input) {
-	let value = sanitizeHtml(input, {allowedTags: [], allowedAttributes: []});
+	let value = sanitizeHtml(input, { allowedTags: [], allowedAttributes: [] });
 	value = value.replace(/["<>]+/g, '');
 	return value;
 }
@@ -18,7 +18,7 @@ function sanitizeString(input) {
 function sanitizeColor(input) {
 	const value = sanitizeString(input); // first remove any HTML
 	const isValidColor = validateColor(value);
-	if(isValidColor) {
+	if (isValidColor) {
 		return value;
 	}
 	return null;
