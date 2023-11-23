@@ -108,6 +108,7 @@ async function handleEvent(event) {
 		response = new Response(generateSVG(imageOptions), {
 			headers: {
 				'content-type': 'image/svg+xml; charset=utf-8',
+				'access-control-allow-origin': '*',
 			},
 		});
 

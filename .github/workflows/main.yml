@@ -5,7 +5,7 @@ on:
   repository_dispatch:
 
 env:
-  NODE_VERSION: 18.x
+  NODE_VERSION: 20.x
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -13,8 +13,8 @@ jobs:
     # always run in pull request, or repository_dispatch. Otherwise (push, etc.) don't run if commit message is skipping CI
     if: github.event_name == 'pull_request' || github.event_name == 'repository_dispatch' || (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]'))
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -37,8 +37,8 @@ jobs:
     # only run if in main. If repository_dispatch always run, else if `schedule` or `push`, only run if not skipping CI
     if: github.ref == 'refs/heads/main' && (github.event_name == 'repository_dispatch' || (github.event_name == 'schedule' || github.event_name == 'push') && (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]')))
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -64,12 +64,12 @@ jobs:
           command: "publish"
 
       - name: Publish (production)
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3.3.2
         # only publish if a direct `push`/`repository_dispatch`
         # publish production deploy if it's the original repository
         if: (github.event_name == 'repository_dispatch' || github.event_name == 'push') && github.repository_owner == 'Cherry'
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: "publish --env=production"
+          command: "deploy --env=production"
 
