@@ -1,21 +1,21 @@
 import sanitizeHtml from 'sanitize-html';
 import validateColor from 'validate-color';
 
-function sanitizeNumber(input) {
-	const isValid = !/^\s*$/.test(input) && !Number.isNaN(input);
+function sanitizeNumber(input: string | number) {
+	const isValid = !/^\s*$/.test(String(input).trim()) && !Number.isNaN(Number(input));
 	if (isValid) {
 		return Number(input);
 	}
 	return null;
 }
 
-function sanitizeString(input) {
-	let value = sanitizeHtml(input, { allowedTags: [], allowedAttributes: [] });
+function sanitizeString(input: string) {
+	let value = sanitizeHtml(input, { allowedTags: [], allowedAttributes: {} });
 	value = value.replace(/["<>]+/g, '');
 	return value;
 }
 
-function sanitizeColor(input) {
+function sanitizeColor(input: string) {
 	const value = sanitizeString(input); // first remove any HTML
 	const isValidColor = validateColor(value);
 	if (isValidColor) {

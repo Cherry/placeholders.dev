@@ -16,32 +16,37 @@
 	"license": "MIT",
 	"author": "James Ross <james@jross.me> (https://jross.me)",
 	"scripts": {
+		"check-types": "tsc --noEmit",
 		"dev": "wrangler dev",
 		"lint": "npm run lint:js && npm run lint:json",
 		"lint:js": "eslint .",
 		"lint:js:fix": "eslint . --fix",
 		"lint:json": "eslint \"**/*.json\"",
-		"publish": "wrangler publish --verbose",
-		"publish:preview": "wrangler preview --verbose",
-		"publish:prod": "wrangler publish --env production --verbose",
-		"publish:staging": "wrangler publish --env staging --verbose",
+		"publish": "wrangler deploy --verbose",
+		"publish:prod": "wrangler deploy --env production --verbose",
+		"publish:staging": "wrangler deploy --env staging --verbose",
 		"start:dev": "wrangler dev",
-		"test": "npm run lint"
+		"test": "vitest"
 	},
 	"devDependencies": {
 		"@adaptivelink/pops": "0.5.7",
 		"@cloudflare/kv-asset-handler": "0.3.0",
+		"@cloudflare/workers-types": "4.20231121.0",
 		"@cloudfour/simple-svg-placeholder": "1.1.0",
-		"@nodecraft/eslint-config": "30.0.0",
-		"eslint": "8.54.0",
+		"@nodecraft/eslint-config": "31.0.1",
+		"@types/sanitize-html": "2.9.5",
+		"@typescript-eslint/eslint-plugin": "6.13.2",
+		"eslint": "8.55.0",
 		"eslint-plugin-json": "3.1.0",
 		"eslint-plugin-node": "11.1.0",
 		"eslint-plugin-unicorn": "49.0.0",
 		"sanitize-html": "2.11.0",
+		"typescript": "5.3.3",
 		"validate-color": "2.2.4",
-		"wrangler": "3.18.0"
+		"vitest": "1.0.4",
+		"wrangler": "3.19.0"
 	},
 	"engines": {
-		"node": ">=16"
+		"node": ">=18"
 	}
 }

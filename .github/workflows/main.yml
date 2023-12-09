@@ -28,7 +28,9 @@ jobs:
             ${{ runner.os }}-node-
 
       - run: npm ci
-      - run: npm test
+      - run: npm run lint
+      - run: npm run check-types
+      - run: npm run test
 
   deploy:
     runs-on: ubuntu-latest
@@ -54,14 +56,14 @@ jobs:
       - run: npm ci
 
       - name: Publish
-        uses: cloudflare/wrangler-action@2.0.0
+        uses: cloudflare/wrangler-action@v3.3.2
         # only publish if a direct `push`/`repository_dispatch`
         # publish non-production deploy if it's a fork
         if: github.event_name == 'repository_dispatch' || github.event_name == 'push' && github.repository_owner != 'Cherry'
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: "publish"
+          command: "deploy"
 
       - name: Publish (production)
         uses: cloudflare/wrangler-action@v3.3.2
