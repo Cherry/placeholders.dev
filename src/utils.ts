@@ -54,4 +54,19 @@ export class PoPsRewriter implements HTMLRewriterElementContentHandlers {
 	}
 }
 
-export const availableImageOptions = ['width', 'height', 'text', 'dy', 'fontFamily', 'fontWeight', 'fontSize', 'bgColor', 'textColor'] as const;
+export const availableImageOptions = [
+	'width',
+	'height',
+	'text',
+	'dy',
+	'fontFamily',
+	'fontWeight',
+	'fontSize',
+	'bgColor',
+	'textColor',
+	'textWrap',
+] as const;
+
+export function getKeys<T extends object>(obj: T) {
+	return Object.keys(obj) as Array<keyof T>;
+}

@@ -1,7 +1,7 @@
 import sanitizeHtml from 'sanitize-html';
 import validateColor from 'validate-color';
 
-function sanitizeNumber(input: string | number) {
+export function sanitizeNumber(input: string | number) {
 	const isValid = !/^\s*$/.test(String(input).trim()) && !Number.isNaN(Number(input));
 	if (isValid) {
 		return Number(input);
@@ -9,13 +9,13 @@ function sanitizeNumber(input: string | number) {
 	return null;
 }
 
-function sanitizeString(input: string) {
+export function sanitizeString(input: string) {
 	let value = sanitizeHtml(input, { allowedTags: [], allowedAttributes: {} });
 	value = value.replace(/["<>]+/g, '');
 	return value;
 }
 
-function sanitizeColor(input: string) {
+export function sanitizeColor(input: string) {
 	const value = sanitizeString(input); // first remove any HTML
 	const isValidColor = validateColor(value);
 	if (isValidColor) {
@@ -23,6 +23,17 @@ function sanitizeColor(input: string) {
 	}
 	return null;
 }
+
+export function sanitizeBoolean(input: string) {
+	if (String(input).toLowerCase() === 'true') {
+		return true;
+	}
+	if (String(input) === '1') {
+		return true;
+	}
+	return false;
+}
+
 export const sanitizers = {
 	width: sanitizeNumber,
 	height: sanitizeNumber,
@@ -33,4 +44,5 @@ export const sanitizers = {
 	fontSize: sanitizeNumber,
 	bgColor: sanitizeColor,
 	textColor: sanitizeColor,
+	textWrap: sanitizeBoolean,
 };

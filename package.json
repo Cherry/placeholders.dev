@@ -26,13 +26,13 @@
 		"publish:prod": "wrangler deploy --env production --verbose",
 		"publish:staging": "wrangler deploy --env staging --verbose",
 		"start:dev": "wrangler dev",
-		"test": "vitest"
+		"test": "vitest run",
+		"test:watch": "vitest watch"
 	},
 	"devDependencies": {
 		"@adaptivelink/pops": "0.5.7",
 		"@cloudflare/kv-asset-handler": "0.3.0",
 		"@cloudflare/workers-types": "4.20231121.0",
-		"@cloudfour/simple-svg-placeholder": "1.1.0",
 		"@nodecraft/eslint-config": "31.0.1",
 		"@types/sanitize-html": "2.9.5",
 		"@typescript-eslint/eslint-plugin": "6.13.2",
