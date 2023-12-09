@@ -1,8 +1,8 @@
 import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
-import generateSVG, { type Options } from '@cloudfour/simple-svg-placeholder';
 import manifestJSON from '__STATIC_CONTENT_MANIFEST';
 
 import { sanitizers } from './sanitizers';
+import { type Options, simpleSvgPlaceholder } from './simple-svg-placeholder';
 import { type Env } from './types';
 import { addHeaders } from './utils';
 import {
@@ -25,7 +25,10 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 	// when in dev, we serve from `/api`
 	if (url.host === 'images.placeholders.dev' || url.pathname.startsWith('/api')) {
 		// do our API work
-		let response = await cache.match(url, { ignoreMethod: true }); // try to find match for this request in the edge cache
+		let response;
+		if (url.host === 'images.placeholders.dev') {
+			response = await cache.match(url, { ignoreMethod: true }); // try to find match for this request in the edge cache
+		}
 		if (response) {
 			// use cache found on Cloudflare edge. Set X-Worker-Cache header for helpful debug
 			const newHdrs = new Headers(response.headers);
@@ -63,7 +66,7 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 				}
 			}
 		}
-		response = new Response(generateSVG(imageOptions), {
+		response = new Response(simpleSvgPlaceholder(imageOptions), {
 			headers: {
 				'content-type': 'image/svg+xml; charset=utf-8',
 				'access-control-allow-origin': '*',
