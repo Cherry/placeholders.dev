@@ -5,6 +5,7 @@ import {
 	sanitizeColor,
 	sanitizeNumber,
 	sanitizeString,
+	sanitizeStringForCss,
 } from './sanitizers';
 
 describe('Sanitizers', () => {
@@ -97,6 +98,17 @@ describe('Sanitizers', () => {
 		expect(sanitizeColor('white')).toBe('white');
 		expect(sanitizeColor('blue')).toBe('blue');
 		expect(sanitizeColor('blueyyyy')).toBe(null);
+	});
+
+	it('string for css', () => {
+		// double check string sanitization
+		expect(sanitizeStringForCss('Hello World')).toBe('Hello World');
+		expect(sanitizeStringForCss('')).toBe('');
+		expect(sanitizeStringForCss(' <script>alert("XSS");</script> ')).toBe('  ');
+
+		// prevent css property injection
+		expect(sanitizeStringForCss('sans-serif; color: red')).toBe('sans-serif color red');
+		expect(sanitizeStringForCss('sans-serif;;; color: red')).toBe('sans-serif color red');
 	});
 
 	it('boolean', () => {

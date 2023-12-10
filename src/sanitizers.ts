@@ -24,6 +24,12 @@ export function sanitizeColor(input: string) {
 	return null;
 }
 
+export function sanitizeStringForCss(input: string) {
+	let value = sanitizeString(input);
+	value = value.replace(/[:;]+/g, '');
+	return value;
+}
+
 export function sanitizeBoolean(input: string) {
 	if (String(input).toLowerCase() === 'true') {
 		return true;
@@ -39,7 +45,7 @@ export const sanitizers = {
 	height: sanitizeNumber,
 	text: sanitizeString,
 	dy: sanitizeString,
-	fontFamily: sanitizeString,
+	fontFamily: sanitizeStringForCss,
 	fontWeight: sanitizeNumber,
 	fontSize: sanitizeNumber,
 	bgColor: sanitizeColor,

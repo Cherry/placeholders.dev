@@ -48,6 +48,15 @@ describe('Worker', () => {
 		expect(text).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100" viewBox="0 0 350 100"><rect fill="#ddd" width="350" height="100"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">Hello World</text></svg>');
 	});
 
+	it('should sanitize for CSS prop injection', async () => {
+		const req = new Request('https://example.com/api/?width=450&height=450&text=James&fontFamily=test;background:url(https://avatars.githubusercontent.com/u/856748?v=4)&textWrap=true', { method: 'GET' });
+		const resp = await worker.fetch(req.url);
+		expect(resp.status).toBe(200);
+
+		const text = await resp.text();
+		expect(text).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="0 0 450 450"><rect fill="#ddd" width="450" height="450"/><foreignObject width="450" height="450"><div xmlns="http://www.w3.org/1999/xhtml" style="align-items: center;box-sizing: border-box;color: rgba(0,0,0,0.5);display: flex;font-family: testbackgroundurl(https//avatars.githubusercontent.com/u/856748?v=4);font-size: 90px;font-weight: bold;height: 100%;line-height: 1.2;justify-content: center;padding: 0.5em;text-align: center;width: 100%;">James</div> </foreignObject></svg>');
+	});
+
 	test.each([
 		// basic tests
 		[
