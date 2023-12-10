@@ -45,7 +45,7 @@ describe('Worker', () => {
 		expect(resp.status).toBe(200);
 
 		const text = await resp.text();
-		expect(text).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100" viewBox="0 0 350 100"><rect fill="#ddd" width="350" height="100"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">Hello World</text></svg>');
+		expect(text).toMatchSnapshot();
 	});
 
 	it('should sanitize for CSS prop injection', async () => {
@@ -54,7 +54,7 @@ describe('Worker', () => {
 		expect(resp.status).toBe(200);
 
 		const text = await resp.text();
-		expect(text).toBe('<svg xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="0 0 450 450"><rect fill="#ddd" width="450" height="450"/><foreignObject width="450" height="450"><div xmlns="http://www.w3.org/1999/xhtml" style="align-items: center;box-sizing: border-box;color: rgba(0,0,0,0.5);display: flex;font-family: testbackgroundurl(https//avatars.githubusercontent.com/u/856748?v=4);font-size: 90px;font-weight: bold;height: 100%;line-height: 1.2;justify-content: center;padding: 0.5em;text-align: center;width: 100%;">James</div> </foreignObject></svg>');
+		expect(text).toMatchSnapshot();
 	});
 
 	test.each([
@@ -64,7 +64,6 @@ describe('Worker', () => {
 				width: 350,
 				height: 100,
 			},
-			'<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100" viewBox="0 0 350 100"><rect fill="#ddd" width="350" height="100"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">350×100</text></svg>',
 		],
 		[
 			{
@@ -73,7 +72,6 @@ describe('Worker', () => {
 				bgColor: '#000',
 				textColor: 'rgba(255,255,255,0.5)',
 			},
-			'<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100"><rect fill="#000" width="200" height="100"/><text fill="rgba(255,255,255,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">200×100</text></svg>',
 		],
 		[
 			{
@@ -82,7 +80,6 @@ describe('Worker', () => {
 				bgColor: '#313131',
 				textColor: '#dfdfde',
 			},
-			'<svg xmlns="http://www.w3.org/2000/svg" width="140" height="100" viewBox="0 0 140 100"><rect fill="#313131" width="140" height="100"/><text fill="#dfdfde" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">140×100</text></svg>',
 		],
 		[
 			{
@@ -90,7 +87,6 @@ describe('Worker', () => {
 				height: 100,
 				text: 'placeholders.dev',
 			},
-			'<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100" viewBox="0 0 350 100"><rect fill="#ddd" width="350" height="100"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">placeholders.dev</text></svg>',
 		],
 		[
 			{
@@ -100,7 +96,6 @@ describe('Worker', () => {
 				bgColor: '#434343',
 				textColor: '#dfdfde',
 			},
-			'<svg xmlns="http://www.w3.org/2000/svg" width="1055" height="100" viewBox="0 0 1055 100"><rect fill="#434343" width="1055" height="100"/><text fill="#dfdfde" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">Hello World</text></svg>',
 		],
 		// text wrapping
 		[
@@ -111,7 +106,6 @@ describe('Worker', () => {
 				bgColor: '#f7f6f6',
 				textWrap: false,
 			},
-			'<svg xmlns="http://www.w3.org/2000/svg" width="250" height="200" viewBox="0 0 250 200"><rect fill="#f7f6f6" width="250" height="200"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="40" dy="14" font-weight="bold" x="50%" y="50%" text-anchor="middle">This text is too long</text></svg>',
 		],
 		[
 			{
@@ -121,9 +115,8 @@ describe('Worker', () => {
 				bgColor: '#f7f6f6',
 				textWrap: true,
 			},
-			'<svg xmlns="http://www.w3.org/2000/svg" width="250" height="200" viewBox="0 0 250 200"><rect fill="#f7f6f6" width="250" height="200"/><foreignObject width="250" height="200"><div xmlns="http://www.w3.org/1999/xhtml" style="align-items: center;box-sizing: border-box;color: rgba(0,0,0,0.5);display: flex;font-family: sans-serif;font-size: 40px;font-weight: bold;height: 100%;line-height: 1.2;justify-content: center;padding: 0.5em;text-align: center;width: 100%;">This text is too long</div> </foreignObject></svg>',
 		],
-	])('should return accurate svg image with query params %s', async (query, expected) => {
+	])('should return accurate svg image with query params %s', async (query) => {
 		const searchParams = new URLSearchParams();
 		for (const key of getKeys(query)) {
 			searchParams.set(key, String(query[key]));
@@ -133,6 +126,6 @@ describe('Worker', () => {
 		expect(resp.status).toBe(200);
 
 		const text = await resp.text();
-		expect(text).toBe(expected);
+		expect(text).toMatchSnapshot();
 	});
 });
