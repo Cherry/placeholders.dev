@@ -33,6 +33,8 @@ This project makes use of Cloudflare Workers, and Cloudflare Workers Sites via W
 	- Background color of the image. Defaults to `#ddd`
 - `textColor`
 	- Color of the text. For transparency, use an rgba or hsla value. Defaults to `rgba(0,0,0,0.5)`
+- `textWrap`
+	- Wrap text to fit within the image (to best ability). Will not alter font size, so especially long strings may still appear outside of the image. Defaults to `false`.
 
 Example URL: `https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%236d6e71`
 ## Dev
