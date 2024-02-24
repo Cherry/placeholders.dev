@@ -1,6 +1,7 @@
 import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
 import manifestJSON from '__STATIC_CONTENT_MANIFEST';
 
+import { writeDataPoint } from './analytics';
 import { sanitizers } from './sanitizers';
 import { type Options, simpleSvgPlaceholder } from './simple-svg-placeholder';
 import { type Env } from './types';
@@ -33,6 +34,7 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 			// use cache found on Cloudflare edge. Set X-Worker-Cache header for helpful debug
 			const newHdrs = new Headers(response.headers);
 			newHdrs.set('X-Worker-Cache', 'true');
+			writeDataPoint(env.PLACEHOLDERS_ANALYTICS, request, { cached: 1 });
 			return new Response(response.body, {
 				status: response.status,
 				statusText: response.statusText,
@@ -82,6 +84,7 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 		}
 
 		ctx.waitUntil(cache.put(url, response.clone())); // store in cache
+		writeDataPoint(env.PLACEHOLDERS_ANALYTICS, request, { cached: 0 });
 		return response;
 	}
 

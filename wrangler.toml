@@ -18,3 +18,8 @@ routes = [
 	{pattern = "images.placeholders.dev/*", zone_id = "51bfc6eeecc90565bd116ee3ebb5e3a8"}
 ]
 logpush = true
+
+
+analytics_engine_datasets = [
+	{ binding = "PLACEHOLDERS_ANALYTICS" }
+]
