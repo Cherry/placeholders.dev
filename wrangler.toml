@@ -1,6 +1,7 @@
 name = "placeholders-dev"
 workers_dev = true
 compatibility_date = "2023-12-09"
+compatibility_flags = ["nodejs_compat"]
 main = "./src/index.ts"
 
 [site]

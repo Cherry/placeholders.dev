@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { type Options, simpleSvgPlaceholder } from './simple-svg-placeholder';
+import { type Options, simpleSvgPlaceholder } from '../src/simple-svg-placeholder';
 
 describe('simpleSVGPlaceholder', () => {
 	const testOptions: Options[] = [
