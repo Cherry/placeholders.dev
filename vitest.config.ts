@@ -15,4 +15,11 @@ export default defineConfig({
 			}),
 		},
 	},
+	build: {
+		rollupOptions: {
+			external: [
+				'__STATIC_CONTENT_MANIFEST',
+			],
+		},
+	},
 });
