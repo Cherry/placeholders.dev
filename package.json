@@ -33,7 +33,7 @@
 		"@adaptivelink/pops": "0.5.8",
 		"@cloudflare/kv-asset-handler": "0.3.1",
 		"@cloudflare/vitest-pool-workers": "0.1.2",
-		"@cloudflare/workers-types": "4.20240312.0",
+		"@cloudflare/workers-types": "4.20240222.0",
 		"@nodecraft/eslint-config": "34.0.1",
 		"@types/sanitize-html": "2.11.0",
 		"@typescript-eslint/eslint-plugin": "7.2.0",
