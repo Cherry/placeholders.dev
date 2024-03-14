@@ -1,35 +1,19 @@
+import { createExecutionContext, env } from 'cloudflare:test';
 import {
-	afterAll,
-	beforeAll,
 	describe,
 	expect,
 	it,
 	test,
 } from 'vitest';
-import { unstable_dev } from 'wrangler';
 
-import { getKeys } from './utils';
-
-import type { UnstableDevWorker } from 'wrangler';
+import worker from '../src/index';
+import { getKeys } from '../src/utils';
 
 describe('Worker', () => {
-	let worker: UnstableDevWorker;
-
-	beforeAll(async () => {
-		worker = await unstable_dev('src/index.ts', {
-			experimental: {
-				disableExperimentalWarning: true,
-			},
-		});
-	});
-
-	afterAll(async () => {
-		await worker.stop();
-	});
-
 	it('should return html landing page', async () => {
 		const req = new Request('https://example.com', { method: 'GET' });
-		const resp = await worker.fetch(req.url);
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
 
 		// check if html is returned
@@ -41,7 +25,8 @@ describe('Worker', () => {
 
 	it('should sanitize for XSS', async () => {
 		const req = new Request('https://example.com/api/?width=350&height=100&text=Hello%20World&bgColor=%22%3E%3Cscript%3Ealert(%22XSS%22);%3C/script%3E', { method: 'GET' });
-		const resp = await worker.fetch(req.url);
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
 
 		const text = await resp.text();
@@ -50,7 +35,8 @@ describe('Worker', () => {
 
 	it('should sanitize for CSS prop injection', async () => {
 		const req = new Request('https://example.com/api/?width=450&height=450&text=James&fontFamily=test;background:url(https://avatars.githubusercontent.com/u/856748?v=4)&textWrap=true', { method: 'GET' });
-		const resp = await worker.fetch(req.url);
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
 
 		const text = await resp.text();
@@ -122,7 +108,8 @@ describe('Worker', () => {
 			searchParams.set(key, String(query[key]));
 		}
 		const req = new Request(`https://example.com/api/?${searchParams.toString()}`, { method: 'GET' });
-		const resp = await worker.fetch(req.url);
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
 
 		const text = await resp.text();

@@ -6,7 +6,7 @@ import {
 	sanitizeNumber,
 	sanitizeString,
 	sanitizeStringForCss,
-} from './sanitizers';
+} from '../src/sanitizers';
 
 describe('Sanitizers', () => {
 	it('number', () => {
