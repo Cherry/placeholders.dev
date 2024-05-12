@@ -5,10 +5,10 @@
 	],
 	"plugins": [
 		"unicorn",
-		"json",
-		"node"
+		"json"
 	],
 	"rules": {
-		"node/no-unsupported-features/es-syntax": "off"
+		"n/no-unsupported-features/es-syntax": "off",
+		"n/no-unsupported-features/node-builtins": "off"
 	}
 }

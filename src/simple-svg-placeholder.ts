@@ -65,14 +65,14 @@ export function simpleSvgPlaceholder({
 
 	// Thanks to: filamentgroup/directory-encoder
 	const cleaned = str
-		.replace(/[\t\n\r]/gim, '') // Strip newlines and tabs
-		.replace(/\s\s+/g, ' ') // Condense multiple spaces
-		.replace(/'/gim, '\\i'); // Normalize quotes
+		.replaceAll(/[\t\n\r]/gim, '') // Strip newlines and tabs
+		.replaceAll(/\s\s+/g, ' ') // Condense multiple spaces
+		.replaceAll(/'/gim, '\\i'); // Normalize quotes
 
 	if (dataUri) {
 		const encoded = encodeURIComponent(cleaned)
-			.replace(/\(/g, '%28') // Encode brackets
-			.replace(/\)/g, '%29');
+			.replaceAll('(', '%28') // Encode brackets
+			.replaceAll(')', '%29');
 
 		return `data:image/svg+xml;charset=${charset},${encoded}`;
 	}

@@ -11,7 +11,7 @@ export function sanitizeNumber(input: string | number) {
 
 export function sanitizeString(input: string) {
 	let value = sanitizeHtml(input, { allowedTags: [], allowedAttributes: {} });
-	value = value.replace(/["<>]+/g, '');
+	value = value.replaceAll(/["<>]+/g, '');
 	return value;
 }
 
@@ -26,7 +26,7 @@ export function sanitizeColor(input: string) {
 
 export function sanitizeStringForCss(input: string) {
 	let value = sanitizeString(input);
-	value = value.replace(/[:;]+/g, '');
+	value = value.replaceAll(/[:;]+/g, '');
 	return value;
 }
 
