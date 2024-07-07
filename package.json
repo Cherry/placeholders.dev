@@ -31,20 +31,20 @@
 	},
 	"devDependencies": {
 		"@adaptivelink/pops": "0.5.8",
-		"@cloudflare/kv-asset-handler": "0.3.3",
-		"@cloudflare/vitest-pool-workers": "0.4.6",
+		"@cloudflare/kv-asset-handler": "0.3.4",
+		"@cloudflare/vitest-pool-workers": "0.4.9",
 		"@cloudflare/workers-types": "4.20240620.0",
 		"@nodecraft/eslint-config": "39.0.0",
 		"@types/sanitize-html": "2.11.0",
-		"@typescript-eslint/eslint-plugin": "7.13.1",
+		"@typescript-eslint/eslint-plugin": "7.15.0",
 		"eslint": "8.57.0",
 		"eslint-plugin-json": "4.0.0",
 		"eslint-plugin-unicorn": "54.0.0",
 		"sanitize-html": "2.13.0",
-		"typescript": "5.5.2",
+		"typescript": "5.5.3",
 		"validate-color": "2.2.4",
 		"vitest": "1.5.3",
-		"wrangler": "3.61.0"
+		"wrangler": "3.63.1"
 	},
 	"engines": {
 		"node": ">=18"
