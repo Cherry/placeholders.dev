@@ -4,8 +4,11 @@ compatibility_date = "2023-12-09"
 compatibility_flags = ["nodejs_compat"]
 main = "./src/index.ts"
 
-[site]
-bucket = "./public"
+[experimental_assets]
+directory = "./public"
+binding = "ASSETS"
+html_handling = "drop-trailing-slash"
+not_found_handling = "404-page"
 
 [env.staging]
 name = "placeholders-staging"
