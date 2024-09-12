@@ -17,15 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: Restore NPM cache
-        uses: actions/cache@v3
-        continue-on-error: true
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: 'npm'
 
       - run: npm ci
       - run: npm run lint
@@ -43,20 +35,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: Restore NPM cache
-        uses: actions/cache@v3
-        continue-on-error: true
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: 'npm'
 
       - run: npm ci
 
       - name: Publish
-        uses: cloudflare/wrangler-action@v3.3.2
+        uses: cloudflare/wrangler-action@v3.7.0
         # only publish if a direct `push`/`repository_dispatch`
         # publish non-production deploy if it's a fork
         if: github.event_name == 'repository_dispatch' || github.event_name == 'push' && github.repository_owner != 'Cherry'
@@ -64,9 +48,10 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: "deploy"
+          wranglerVersion: "3.77.0"
 
       - name: Publish (production)
-        uses: cloudflare/wrangler-action@v3.3.2
+        uses: cloudflare/wrangler-action@v3.7.0
         # only publish if a direct `push`/`repository_dispatch`
         # publish production deploy if it's the original repository
         if: (github.event_name == 'repository_dispatch' || github.event_name == 'push') && github.repository_owner == 'Cherry'
@@ -74,4 +59,5 @@ jobs:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           command: "deploy --env=production"
+          wranglerVersion: "3.77.0"
 

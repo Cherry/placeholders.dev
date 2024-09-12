@@ -24,3 +24,6 @@ logpush = true
 analytics_engine_datasets = [
 	{ binding = "PLACEHOLDERS_ANALYTICS" }
 ]
+
+[env.production.observability]
+enabled = true
