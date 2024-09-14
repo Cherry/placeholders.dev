@@ -32,7 +32,7 @@
 	"devDependencies": {
 		"@adaptivelink/pops": "0.5.8",
 		"@cloudflare/kv-asset-handler": "0.3.4",
-		"@cloudflare/vitest-pool-workers": "0.4.31",
+		"@cloudflare/vitest-pool-workers": "0.5.2",
 		"@cloudflare/workers-types": "4.20240909.0",
 		"@nodecraft/eslint-config": "43.1.0",
 		"@types/sanitize-html": "2.13.0",
@@ -43,8 +43,8 @@
 		"sanitize-html": "2.13.0",
 		"typescript": "5.6.2",
 		"validate-color": "2.2.4",
-		"vitest": "1.5.3",
-		"wrangler": "3.77.0"
+		"vitest": "2.0.5",
+		"wrangler": "3.78.2"
 	},
 	"engines": {
 		"node": ">=18"
