@@ -38,6 +38,22 @@ describe('simpleSVGPlaceholder', () => {
 		},
 		{
 			dataUri: false,
+			width: 1920,
+			height: 1080,
+			text: 'Dark mode background',
+			darkBgColor: 'rgba(255,255,255,0.5)',
+			bgColor: 'rgba(0,0,0,0.5)',
+		},
+		{
+			dataUri: false,
+			width: 1920,
+			height: 1080,
+			text: 'Dark mode text',
+			darkTextColor: 'rgba(255,255,255,0.5)',
+			textColor: 'rgba(0,0,0,0.5)',
+		},
+		{
+			dataUri: false,
 			width: 300,
 			height: 300,
 			text: 'Some super long string',

@@ -12,6 +12,8 @@ export type Options = {
 	lineHeight?: number;
 	bgColor?: string;
 	textColor?: string;
+	darkBgColor?: string;
+	darkTextColor?: string;
 	dataUri?: boolean;
 	charset?: string;
 	textWrap?: boolean;
@@ -30,12 +32,27 @@ export function simpleSvgPlaceholder({
 	dy = fontSize * 0.35,
 	bgColor = '#ddd',
 	textColor = 'rgba(0,0,0,0.5)',
+	darkBgColor,
+	darkTextColor,
 	dataUri = true,
 	charset = 'utf8',
 	textWrap = false,
 	padding = '0.5em',
 }: Options = {}) {
 	let content = '';
+
+	let style = '';
+
+	if (darkBgColor || darkTextColor) {
+		style = `<style>
+      @media (prefers-color-scheme: dark) {
+        ${darkBgColor ? `rect { fill: ${darkBgColor}; }` : ''}
+        ${darkTextColor && !textWrap ? `text { fill: ${darkTextColor}; }` : ''}
+        ${darkTextColor && textWrap ? `div { color: ${darkTextColor} !important; }` : ''}
+      }
+      </style>`;
+	}
+
 	if (textWrap) {
 		content = `<foreignObject width="${width}" height="${height}">
 		<div xmlns="http://www.w3.org/1999/xhtml" style="
@@ -59,6 +76,7 @@ export function simpleSvgPlaceholder({
 	}
 
 	const str = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+	${style}
 	<rect fill="${bgColor}" width="${width}" height="${height}"/>
 	${content}
 	</svg>`;
