@@ -4,7 +4,7 @@ compatibility_date = "2023-12-09"
 compatibility_flags = ["nodejs_compat"]
 main = "./src/index.ts"
 
-[experimental_assets]
+[assets]
 directory = "./public"
 binding = "ASSETS"
 html_handling = "drop-trailing-slash"
