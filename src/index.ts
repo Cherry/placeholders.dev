@@ -81,7 +81,8 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 		return response;
 	}
 
-	// else get the assets from KV
+	// else get the assets from Workers Assets/
+	// We need to rewrite the path to `/cdn-cgi/assets/...`
 	const options = {
 		cacheControl: {
 			edgeTTL: 60 * 60 * 1, // 1 hour
@@ -96,14 +97,37 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 
 	let asset = null;
 	try {
-		asset = await env.ASSETS.fetch(request);
+		const fixedUrl = new URL(request.url);
+		fixedUrl.pathname = `/cdn-cgi/assets${fixedUrl.pathname}`;
+		if (fixedUrl.pathname.endsWith('/')) {
+			fixedUrl.pathname = fixedUrl.pathname.slice(0, -1);
+		}
+		const fixedRequest = new Request(fixedUrl.toString(), request);
+		asset = await env.ASSETS.fetch(fixedRequest);
 	} catch (err) {
 		const probableError = err as Error;
 		return new Response(probableError?.message || probableError.toString(), { status: 500 });
 	}
 
+	// rewrite location redirects to remove the `/cdn-cgi/assets` prefix
+	const assetHeaders = new Headers(asset.headers);
+	if (assetHeaders.has('location')) {
+		const location = assetHeaders.get('location');
+		if (location && location.includes('/cdn-cgi/assets')) {
+			assetHeaders.set('location', location.replace('/cdn-cgi/assets', ''));
+
+			// if empty string, set to root so that we actually redirect
+			if (assetHeaders.get('location') === '') {
+				assetHeaders.set('location', '/');
+			}
+		}
+	}
 	// recreate response so that headers are mutable
-	asset = new Response(asset.body, asset);
+	asset = new Response(asset.body, {
+		status: asset.status,
+		statusText: asset.statusText,
+		headers: assetHeaders,
+	});
 	// set cache headers
 	asset.headers.set('Cache-Control', `public, max-age=${options.cacheControl.browserTTL}`);
 

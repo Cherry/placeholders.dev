@@ -33,18 +33,18 @@
 		"@adaptivelink/pops": "0.5.8",
 		"@cloudflare/kv-asset-handler": "0.3.4",
 		"@cloudflare/vitest-pool-workers": "https://prerelease-registry.devprod.cloudflare.dev/workers-sdk/runs/11180182432/npm-package-cloudflare-vitest-pool-workers-6835",
-		"@cloudflare/workers-types": "4.20241004.0",
+		"@cloudflare/workers-types": "4.20241106.0",
 		"@nodecraft/eslint-config": "44.0.0",
 		"@types/sanitize-html": "2.13.0",
-		"@typescript-eslint/eslint-plugin": "8.8.0",
+		"@typescript-eslint/eslint-plugin": "8.13.0",
 		"eslint": "8.57.1",
 		"eslint-plugin-json": "4.0.1",
 		"eslint-plugin-unicorn": "56.0.0",
 		"sanitize-html": "2.13.1",
-		"typescript": "5.6.2",
+		"typescript": "5.6.3",
 		"validate-color": "2.2.4",
-		"vitest": "2.1.2",
-		"wrangler": "3.80.0"
+		"vitest": "2.1.4",
+		"wrangler": "3.86.0"
 	},
 	"engines": {
 		"node": ">=18"
