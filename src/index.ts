@@ -81,8 +81,11 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 		return response;
 	}
 
-	// else get the assets from Workers Assets/
-	// We need to rewrite the path to `/cdn-cgi/assets/...`
+	// else get the assets from Workers Assets
+	// Workers Assets doesn't (yet) support running code after getting a Worker
+	// So to workaround this, we store all of our assets in a `/cdn-cgi/assets/` subdirectory
+	// This way, the path isn't accessible publicly, but we can then rewrite the path to `/cdn-cgi/assets/...` to get the asset
+	// And then finally run any necessary code on the asset, like setting headers, HTMLRewriter, etc.
 	const options = {
 		cacheControl: {
 			edgeTTL: 60 * 60 * 1, // 1 hour
@@ -110,6 +113,7 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 	}
 
 	// rewrite location redirects to remove the `/cdn-cgi/assets` prefix
+	// this prevents the browser from redirecting to the wrong location when hitting `/index.html` for example
 	const assetHeaders = new Headers(asset.headers);
 	if (assetHeaders.has('location')) {
 		const location = assetHeaders.get('location');
