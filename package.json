@@ -1,7 +1,7 @@
 {
 	"name": "placeholders.dev",
 	"version": "1.0.0",
-	"description": "Generate placeholder images with Cloudflare Workers in 200+ edge locations",
+	"description": "Generate placeholder images with Cloudflare Workers in 330+ edge locations",
 	"keywords": [
 		"placeholders"
 	],

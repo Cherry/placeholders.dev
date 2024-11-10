@@ -50,5 +50,7 @@ export const sanitizers = {
 	fontSize: sanitizeNumber,
 	bgColor: sanitizeColor,
 	textColor: sanitizeColor,
+	darkBgColor: sanitizeColor,
+	darkTextColor: sanitizeColor,
 	textWrap: sanitizeBoolean,
 };

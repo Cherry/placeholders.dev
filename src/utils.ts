@@ -64,6 +64,8 @@ export const availableImageOptions = [
 	'fontSize',
 	'bgColor',
 	'textColor',
+	'darkBgColor',
+	'darkTextColor',
 	'textWrap',
 ] as const;
 
