@@ -1,6 +1,3 @@
-import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
-import manifestJSON from '__STATIC_CONTENT_MANIFEST';
-
 import { writeDataPoint } from './analytics';
 import { sanitizers } from './sanitizers';
 import { type Options, simpleSvgPlaceholder } from './simple-svg-placeholder';
@@ -12,10 +9,6 @@ import {
 	cacheTtl,
 	filesRegex,
 } from './utils';
-
-const DEBUG = false;
-const assetManifest = JSON.parse(manifestJSON);
-
 
 async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 	const url = new URL(request.url);
@@ -88,25 +81,17 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 		return response;
 	}
 
-	const getAssetPayload = {
-		request: request,
-		waitUntil(promise: Promise<unknown>) {
-			return ctx.waitUntil(promise);
-		},
-	};
-	const getAssetOptions = {
-		ASSET_NAMESPACE: env.__STATIC_CONTENT,
-		ASSET_MANIFEST: assetManifest,
-	};
-
-	// else get the assets from KV
+	// else get the assets from Workers Assets
+	// Workers Assets doesn't (yet) support running code after getting a Worker
+	// So to workaround this, we store all of our assets in a `/cdn-cgi/assets/` subdirectory
+	// This way, the path isn't accessible publicly, but we can then rewrite the path to `/cdn-cgi/assets/...` to get the asset
+	// And then finally run any necessary code on the asset, like setting headers, HTMLRewriter, etc.
 	const options = {
 		cacheControl: {
 			edgeTTL: 60 * 60 * 1, // 1 hour
 			browserTTL: 60 * 60 * 1, // 1 hour
 			bypassCache: false,
 		},
-		...getAssetOptions,
 	};
 	if (filesRegex.test(url.pathname)) {
 		options.cacheControl.edgeTTL = 60 * 60 * 24 * 30; // 30 days
@@ -115,33 +100,44 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 
 	let asset = null;
 	try {
-		if (DEBUG) {
-			// customize caching
-			options.cacheControl.bypassCache = true;
+		const fixedUrl = new URL(request.url);
+		fixedUrl.pathname = `/cdn-cgi/assets${fixedUrl.pathname}`;
+		if (fixedUrl.pathname.endsWith('/')) {
+			fixedUrl.pathname = fixedUrl.pathname.slice(0, -1);
 		}
-		asset = await getAssetFromKV(getAssetPayload, options);
+		const fixedRequest = new Request(fixedUrl.toString(), request);
+		asset = await env.ASSETS.fetch(fixedRequest);
 	} catch (err) {
-		// if an error is thrown try to serve the asset at 404.html
-		if (!DEBUG) {
-			try {
-				const notFoundResponse = await getAssetFromKV(getAssetPayload, {
-					mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req),
-					...getAssetOptions,
-				});
-
-				const headers = new Headers(notFoundResponse.headers);
-				headers.set('content-type', 'text/html; charset=utf-8');
-				return new Response(notFoundResponse.body, {
-					headers,
-					status: 404,
-				});
-			} catch {}
-		}
 		const probableError = err as Error;
 		return new Response(probableError?.message || probableError.toString(), { status: 500 });
 	}
 
-	if (asset && asset.headers && asset.headers.has('content-type') && asset.headers.get('content-type')?.includes('text/html')) {
+	// rewrite location redirects to remove the `/cdn-cgi/assets` prefix
+	// this prevents the browser from redirecting to the wrong location when hitting `/index.html` for example
+	const assetHeaders = new Headers(asset.headers);
+	if (assetHeaders.has('location')) {
+		const location = assetHeaders.get('location');
+		if (location && location.includes('/cdn-cgi/assets')) {
+			assetHeaders.set('location', location.replace('/cdn-cgi/assets', ''));
+
+			// if empty string, set to root so that we actually redirect
+			if (assetHeaders.get('location') === '') {
+				assetHeaders.set('location', '/');
+			}
+		}
+	}
+	// recreate response so that headers are mutable
+	asset = new Response(asset.body, {
+		status: asset.status,
+		statusText: asset.statusText,
+		headers: assetHeaders,
+	});
+	// set cache headers
+	asset.headers.set('Cache-Control', `public, max-age=${options.cacheControl.browserTTL}`);
+
+	// append security headers to HTML
+	if (asset?.headers?.has?.('content-type') && asset.headers.get('content-type')?.includes?.('text/html')) {
+		// we're about to manipualte headers, so need to recreaete the response to be mutable
 		// set security headers on html pages
 		for (const name of Object.keys(addHeaders)) {
 			const keyedName = name as keyof typeof addHeaders;
