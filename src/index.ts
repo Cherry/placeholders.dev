@@ -97,13 +97,7 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 
 	let asset = null;
 	try {
-		const fixedUrl = new URL(request.url);
-		if (fixedUrl.pathname.endsWith('/')) {
-			fixedUrl.pathname = fixedUrl.pathname.slice(0, -1);
-		}
-		const fixedRequest = new Request(fixedUrl.toString(), request);
-		console.log('get from workers assets');
-		asset = await env.ASSETS.fetch(fixedRequest);
+		asset = await env.ASSETS.fetch(request);
 	} catch (err) {
 		const probableError = err as Error;
 		return new Response(probableError?.message || probableError.toString(), { status: 500 });
@@ -128,7 +122,6 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 		}
 	}
 
-	console.log('do transform????');
 	const transformed = new HTMLRewriter().on('*', new PoPsRewriter()).transform(asset);
 	return transformed;
 }
