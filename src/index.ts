@@ -82,9 +82,6 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 	}
 
 	// else get the assets from Workers Assets
-	// Workers Assets doesn't (yet) support running code after getting a Worker
-	// So to workaround this, we store all of our assets in a `/cdn-cgi/assets/` subdirectory
-	// This way, the path isn't accessible publicly, but we can then rewrite the path to `/cdn-cgi/assets/...` to get the asset
 	// And then finally run any necessary code on the asset, like setting headers, HTMLRewriter, etc.
 	const options = {
 		cacheControl: {
@@ -101,36 +98,22 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 	let asset = null;
 	try {
 		const fixedUrl = new URL(request.url);
-		fixedUrl.pathname = `/cdn-cgi/assets${fixedUrl.pathname}`;
 		if (fixedUrl.pathname.endsWith('/')) {
 			fixedUrl.pathname = fixedUrl.pathname.slice(0, -1);
 		}
 		const fixedRequest = new Request(fixedUrl.toString(), request);
+		console.log('get from workers assets');
 		asset = await env.ASSETS.fetch(fixedRequest);
 	} catch (err) {
 		const probableError = err as Error;
 		return new Response(probableError?.message || probableError.toString(), { status: 500 });
 	}
 
-	// rewrite location redirects to remove the `/cdn-cgi/assets` prefix
-	// this prevents the browser from redirecting to the wrong location when hitting `/index.html` for example
-	const assetHeaders = new Headers(asset.headers);
-	if (assetHeaders.has('location')) {
-		const location = assetHeaders.get('location');
-		if (location && location.includes('/cdn-cgi/assets')) {
-			assetHeaders.set('location', location.replace('/cdn-cgi/assets', ''));
-
-			// if empty string, set to root so that we actually redirect
-			if (assetHeaders.get('location') === '') {
-				assetHeaders.set('location', '/');
-			}
-		}
-	}
 	// recreate response so that headers are mutable
 	asset = new Response(asset.body, {
 		status: asset.status,
 		statusText: asset.statusText,
-		headers: assetHeaders,
+		headers: asset.headers,
 	});
 	// set cache headers
 	asset.headers.set('Cache-Control', `public, max-age=${options.cacheControl.browserTTL}`);
@@ -145,6 +128,7 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 		}
 	}
 
+	console.log('do transform????');
 	const transformed = new HTMLRewriter().on('*', new PoPsRewriter()).transform(asset);
 	return transformed;
 }

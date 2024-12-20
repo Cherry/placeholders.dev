@@ -9,6 +9,7 @@ directory = "./public"
 binding = "ASSETS"
 html_handling = "drop-trailing-slash"
 not_found_handling = "404-page"
+experimental_serve_directly = false
 
 [env.staging]
 name = "placeholders-staging"
