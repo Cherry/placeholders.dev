@@ -11,7 +11,7 @@ placeholders.dev generates custom placeholder images on the fly, such as the exa
 
 ## Technology
 
-This project makes use of Cloudflare Workers, and Cloudflare Workers Sites via Workers KV. It also implements a HTMLRewriter to update the total Cloudflare PoPs in multiple locations.
+This project makes use of Cloudflare Workers, and Cloudflare Workers Static Assets. It also implements a HTMLRewriter to update the total Cloudflare PoPs in multiple locations.
 
 ### Available API Options
 
