@@ -5,8 +5,8 @@ on:
   repository_dispatch:
 
 env:
-  NODE_VERSION: 20.x
-  WRANGLER_VERSION: 3.86.0
+  NODE_VERSION: 22.x
+  WRANGLER_VERSION: 3.99.0
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
       - run: npm ci
 
       - name: Publish
-        uses: cloudflare/wrangler-action@v3.7.0
+        uses: cloudflare/wrangler-action@v3.13.0
         # only publish if a direct `push`/`repository_dispatch`
         # publish non-production deploy if it's a fork
         if: github.event_name == 'repository_dispatch' || github.event_name == 'push' && github.repository_owner != 'Cherry'
@@ -52,7 +52,7 @@ jobs:
           wranglerVersion: ${{ env.WRANGLER_VERSION }}
 
       - name: Publish (production)
-        uses: cloudflare/wrangler-action@v3.7.0
+        uses: cloudflare/wrangler-action@v3.13.0
         # only publish if a direct `push`/`repository_dispatch`
         # publish production deploy if it's the original repository
         if: (github.event_name == 'repository_dispatch' || github.event_name == 'push') && github.repository_owner == 'Cherry'
