@@ -115,4 +115,44 @@ describe('Worker', () => {
 		const text = await resp.text();
 		expect(text).toMatchSnapshot();
 	});
+
+	it('should return accurate svg image with simple path', async () => {
+		const req = new Request('https://example.com/api/350', { method: 'GET' });
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
+		expect(resp.status).toBe(200);
+
+		const text = await resp.text();
+		expect(text).toMatchSnapshot();
+	});
+
+	it('should return accurate svg image with full url path', async () => {
+		const req = new Request('https://example.com/api/350x100', { method: 'GET' });
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
+		expect(resp.status).toBe(200);
+
+		const text = await resp.text();
+		expect(text).toMatchSnapshot();
+	});
+
+	it('should return accurate svg image with url path and query params', async () => {
+		const req = new Request('https://example.com/api/350x100?bgColor=%23f7f6f6&text=Hello%20World', { method: 'GET' });
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
+		expect(resp.status).toBe(200);
+
+		const text = await resp.text();
+		expect(text).toMatchSnapshot();
+	});
+
+	it('should return accurate svg image with url path and query params overriding', async () => {
+		const req = new Request('https://example.com/api/350x100?width=360&height=200', { method: 'GET' });
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
+		expect(resp.status).toBe(200);
+
+		const text = await resp.text();
+		expect(text).toMatchSnapshot();
+	});
 });

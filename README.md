@@ -13,6 +13,11 @@ placeholders.dev generates custom placeholder images on the fly, such as the exa
 
 This project makes use of Cloudflare Workers, and Cloudflare Workers Static Assets. It also implements a HTMLRewriter to update the total Cloudflare PoPs in multiple locations.
 
+Example URLs:
+- Basic url path: `https://images.placeholders.dev/350`
+- Full url path: `https://images.placeholders.dev/350x150`
+- Full query params:`https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%236d6e71`
+
 ### Available API Options
 
 - `width`
@@ -36,13 +41,7 @@ This project makes use of Cloudflare Workers, and Cloudflare Workers Static Asse
 - `textWrap`
 	- Wrap text to fit within the image (to best ability). Will not alter font size, so especially long strings may still appear outside of the image. Defaults to `false`.
 
-Example URL: `https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%236d6e71`
 ## Dev
-
-### Prerequisites
-
-#### Wrangler
-`wrangler` is a CLI tool from Cloudflare, designed to push projects to Cloudflare Workers. See [Cloudflare's documentation](https://developers.cloudflare.com/workers/wrangler/install-and-update/) for more information.
 
 ### Run
 

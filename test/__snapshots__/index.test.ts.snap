@@ -1,5 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Worker > should return accurate svg image with full url path 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100" viewBox="0 0 350 100"><rect fill="#ddd" width="350" height="100"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">350×100</text></svg>"`;
+
 exports[`Worker > should return accurate svg image with query params { width: 140, height: 100, bgColor: '#313131', textColor: '#dfdfde' } 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="140" height="100" viewBox="0 0 140 100"><rect fill="#313131" width="140" height="100"/><text fill="#dfdfde" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">140×100</text></svg>"`;
 
 exports[`Worker > should return accurate svg image with query params { width: 200, height: 100, bgColor: '#000', textColor: 'rgba(255,255,255,0.5)' } 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100"><rect fill="#000" width="200" height="100"/><text fill="rgba(255,255,255,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">200×100</text></svg>"`;
@@ -13,6 +15,12 @@ exports[`Worker > should return accurate svg image with query params { width: 35
 exports[`Worker > should return accurate svg image with query params { width: 350, height: 100, text: 'placeholders.dev' } 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100" viewBox="0 0 350 100"><rect fill="#ddd" width="350" height="100"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">placeholders.dev</text></svg>"`;
 
 exports[`Worker > should return accurate svg image with query params { width: 1055, height: 100, text: 'Hello World', bgColor: '#434343', textColor: '#dfdfde' } 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="1055" height="100" viewBox="0 0 1055 100"><rect fill="#434343" width="1055" height="100"/><text fill="#dfdfde" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">Hello World</text></svg>"`;
+
+exports[`Worker > should return accurate svg image with simple path 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="350" height="350" viewBox="0 0 350 350"><rect fill="#ddd" width="350" height="350"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="70" dy="24.5" font-weight="bold" x="50%" y="50%" text-anchor="middle">350×350</text></svg>"`;
+
+exports[`Worker > should return accurate svg image with url path and query params 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="350" height="100" viewBox="0 0 350 100"><rect fill="#f7f6f6" width="350" height="100"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="20" dy="7" font-weight="bold" x="50%" y="50%" text-anchor="middle">Hello World</text></svg>"`;
+
+exports[`Worker > should return accurate svg image with url path and query params overriding 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="360" height="200" viewBox="0 0 360 200"><rect fill="#ddd" width="360" height="200"/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="40" dy="14" font-weight="bold" x="50%" y="50%" text-anchor="middle">360×200</text></svg>"`;
 
 exports[`Worker > should sanitize for CSS prop injection 1`] = `"<svg xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="0 0 450 450"><rect fill="#ddd" width="450" height="450"/><foreignObject width="450" height="450"><div xmlns="http://www.w3.org/1999/xhtml" style="align-items: center;box-sizing: border-box;color: rgba(0,0,0,0.5);display: flex;font-family: testbackgroundurl(https//avatars.githubusercontent.com/u/856748?v=4);font-size: 90px;font-weight: bold;height: 100%;line-height: 1.2;justify-content: center;padding: 0.5em;text-align: center;width: 100%;">James</div> </foreignObject></svg>"`;
 

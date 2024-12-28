@@ -1,5 +1,5 @@
 import { writeDataPoint } from './analytics';
-import { sanitizers } from './sanitizers';
+import { sanitizeNumber, sanitizers } from './sanitizers';
 import { type Options, simpleSvgPlaceholder } from './simple-svg-placeholder';
 import { type Env } from './types';
 import { addHeaders } from './utils';
@@ -44,7 +44,24 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 			textColor: 'rgba(0,0,0,0.5)',
 		};
 
-		// options that can be overwritten
+
+		const baseURL = url.pathname.replace('/api', '');
+		if (baseURL !== '/') {
+			// URL might be /350, in which case validate and set height and width
+			// or if it's /350x150, then set both height and width
+			const size = baseURL.replace('/', '');
+			const sizeParts = size.split('x');
+			const width = sanitizeNumber(Number.parseInt(sizeParts[0], 10));
+			const height = sizeParts[1] ? sanitizeNumber(Number.parseInt(sizeParts[1], 10)) : null;
+			if (height && width) {
+				imageOptions.width = width;
+				imageOptions.height = height;
+			} else if (width) {
+				imageOptions.width = width;
+				imageOptions.height = width;
+			}
+		}
+		// options that can be overwritten via query
 		for (const key of availableImageOptions) {
 			if (url.searchParams.has(key)) {
 				const rawValue = url.searchParams.get(key);

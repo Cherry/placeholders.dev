@@ -32,10 +32,10 @@
 	"devDependencies": {
 		"@adaptivelink/pops": "0.5.8",
 		"@cloudflare/vitest-pool-workers": "0.5.40",
-		"@cloudflare/workers-types": "4.20241218.0",
+		"@cloudflare/workers-types": "4.20241224.0",
 		"@nodecraft/eslint-config": "44.3.0",
 		"@types/sanitize-html": "2.13.0",
-		"@typescript-eslint/eslint-plugin": "8.18.1",
+		"@typescript-eslint/eslint-plugin": "8.18.2",
 		"eslint": "8.57.1",
 		"eslint-plugin-json": "4.0.1",
 		"eslint-plugin-unicorn": "56.0.1",

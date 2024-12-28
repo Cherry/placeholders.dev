@@ -111,6 +111,10 @@
 			font-family: monospace;
 		}
 
+		.documentation > ul {
+			margin: 1em 0;
+		}
+
 		.examples {
 			margin-bottom: 1em;
 		}
@@ -188,7 +192,7 @@
 		<div class="intro">placeholders.dev</div>
 		<h1 class="tagline">Generate super-fast placeholder images in <span class="edgeLocations">330</span>+ edge locations, powered by Cloudflare Workers</h1>
 		<div class="examples">
-			<img src="https://images.placeholders.dev/?width=350&height=100" width="350" height="150" alt="350x150 placeholder image">
+			<img src="https://images.placeholders.dev/350x100" width="350" height="150" alt="350x150 placeholder image">
 			<img src="https://images.placeholders.dev/?width=200&height=100&bgColor=%23000&textColor=rgba(255,255,255,0.5)" width="200" height="100" alt="200x100 placeholder image">
 			<img src="https://images.placeholders.dev/?width=140&height=100&bgColor=%23313131&textColor=%23dfdfde" width="140" height="100" alt="140x100 placeholder image">
 			<img src="https://images.placeholders.dev/?width=350&height=100&text=placeholders.dev" width="350" height="100" alt="350x100 placeholder image">
@@ -197,6 +201,19 @@
 		<div class="documentation">
 			<h2>Information</h2>
 			<p>placeholders.dev generates custom placeholder images on the fly, such as the examples above. All of these images are generated on Cloudflare's Edge, at <span class="edgeLocations">330</span>+ locations, ensuring the best possible performance for all of your users. All images are cached for lengthy periods of time.</p>
+
+			<h3>Example URLs</h4>
+			<ul>
+				<li>
+					Basic url path: <pre>https://images.placeholders.dev/350</pre>
+				</li>
+				<li>
+					Full url path: <pre>https://images.placeholders.dev/350x150</pre>
+				</li>
+				<li>
+					Full query params: <pre>https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%236d6e71</pre>
+				</li>
+			</ul>
 
 			<h3>Available API Options</h3>
 			<dl>
@@ -230,9 +247,6 @@
 				<dt><code>textWrap</code></dt>
 				<dd>Wrap text to fit within the image (to best ability). Will not alter font size, so especially long strings may still appear outside of the image. Defaults to <code>false</code></dd>
 			</dl>
-
-			<h4>Example URL</h4>
-			<pre>https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%236d6e71</pre>
 		</div>
 		<div class="icons-social">
 			<a target="_blank" href="https://github.com/Cherry/placeholders.dev" rel="noopener"><i class="fab fa-github" role="img" aria-label="placeholders.dev GitHub"></i></a>
