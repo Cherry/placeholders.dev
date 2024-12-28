@@ -1,6 +1,6 @@
 # [placeholders.dev](https://placeholders.dev)
 Generate super-fast placeholder images in 330+ edge locations, powered by Cloudflare Workers
-![350x150 placeholder image](https://images.placeholders.dev/?width=350&amp;height=100)![200x100 placeholder image](https://images.placeholders.dev/?width=200&amp;height=100&amp;bgColor=%23000&amp;textColor=rgba(255,255,255,0.5))![140x100 placeholder image](https://images.placeholders.dev/?width=140&amp;height=100&amp;bgColor=%23313131&amp;textColor=%23dfdfde)
+![350x150 placeholder image](https://images.placeholders.dev/350x100)![200x100 placeholder image](https://images.placeholders.dev/?width=200&amp;height=100&amp;bgColor=%23000&amp;textColor=rgba(255,255,255,0.5))![140x100 placeholder image](https://images.placeholders.dev/?width=140&amp;height=100&amp;bgColor=%23313131&amp;textColor=%23dfdfde)
 ![1055x100 placeholder image](https://images.placeholders.dev/?width=1055&amp;height=100&amp;text=Hello%20World&amp;bgColor=%23434343&amp;textColor=%23dfdfde)
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Cherry/placeholders.dev)
@@ -13,7 +13,8 @@ placeholders.dev generates custom placeholder images on the fly, such as the exa
 
 This project makes use of Cloudflare Workers, and Cloudflare Workers Static Assets. It also implements a HTMLRewriter to update the total Cloudflare PoPs in multiple locations.
 
-Example URLs:
+### Example URLs:
+
 - Basic url path: `https://images.placeholders.dev/350`
 - Full url path: `https://images.placeholders.dev/350x150`
 - Full query params:`https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%236d6e71`
@@ -42,8 +43,6 @@ Example URLs:
 	- Wrap text to fit within the image (to best ability). Will not alter font size, so especially long strings may still appear outside of the image. Defaults to `false`.
 
 ## Dev
-
-### Run
 
 - `npm run start:dev` (this will use `wrangler dev` to locally start the Cloudflare Worker for testing)
 
