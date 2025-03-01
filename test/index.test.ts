@@ -21,6 +21,20 @@ describe('Worker', () => {
 		expect(headers.get('content-type')).toBe('text/html; charset=utf-8');
 		const text = await resp.text();
 		expect(text).toMatch(/^<!DOCTYPE html>/);
+
+		// ensure cache header is set (so worker is running)
+		expect(headers.get('cache-control')).toBe('public, max-age=3600');
+	});
+
+	it('should set right headers for static assets', async () => {
+		const req = new Request('https://example.com/share.png', { method: 'GET' });
+		const ctx = createExecutionContext();
+		const resp = await worker.fetch(req, env, ctx);
+		expect(resp.status).toBe(200);
+
+		const headers = resp.headers;
+		expect(headers.get('content-type')).toBe('image/png');
+		expect(headers.get('cache-control')).toBe('public, max-age=2592000');
 	});
 
 	it('should sanitize for XSS', async () => {
