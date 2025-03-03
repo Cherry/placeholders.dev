@@ -1,4 +1,4 @@
-import { createExecutionContext, env } from 'cloudflare:test';
+import { SELF, createExecutionContext, env } from 'cloudflare:test';
 import {
 	describe,
 	expect,
@@ -11,9 +11,7 @@ import { getKeys } from '../src/utils';
 
 describe('Worker', () => {
 	it('should return html landing page', async () => {
-		const req = new Request('https://example.com', { method: 'GET' });
-		const ctx = createExecutionContext();
-		const resp = await worker.fetch(req, env, ctx);
+		const resp = await SELF.fetch('http://example.com');
 		expect(resp.status).toBe(200);
 
 		// check if html is returned
@@ -27,9 +25,7 @@ describe('Worker', () => {
 	});
 
 	it('should set right headers for static assets', async () => {
-		const req = new Request('https://example.com/share.png', { method: 'GET' });
-		const ctx = createExecutionContext();
-		const resp = await worker.fetch(req, env, ctx);
+		const resp = await SELF.fetch('http://example.com/share.png');
 		expect(resp.status).toBe(200);
 
 		const headers = resp.headers;
