@@ -35,7 +35,7 @@ export function simpleSvgPlaceholder({
 	darkBgColor,
 	darkTextColor,
 	dataUri = true,
-	charset = 'utf8',
+	charset = 'UTF-8', // eslint-disable-line unicorn/text-encoding-identifier-case
 	textWrap = false,
 	padding = '0.5em',
 }: Options = {}) {

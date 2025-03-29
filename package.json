@@ -31,11 +31,11 @@
 	},
 	"devDependencies": {
 		"@adaptivelink/pops": "0.5.8",
-		"@cloudflare/vitest-pool-workers": "0.8.4",
-		"@cloudflare/workers-types": "4.20250321.0",
+		"@cloudflare/vitest-pool-workers": "0.8.8",
+		"@cloudflare/workers-types": "4.20250327.0",
 		"@nodecraft/eslint-config": "46.0.0",
-		"@types/sanitize-html": "2.13.0",
-		"@typescript-eslint/eslint-plugin": "8.27.0",
+		"@types/sanitize-html": "2.15.0",
+		"@typescript-eslint/eslint-plugin": "8.28.0",
 		"eslint": "8.57.1",
 		"eslint-plugin-json": "4.0.1",
 		"eslint-plugin-unicorn": "56.0.1",
@@ -43,7 +43,7 @@
 		"typescript": "5.8.2",
 		"validate-color": "2.2.4",
 		"vitest": "3.0.9",
-		"wrangler": "4.4.0"
+		"wrangler": "4.6.0"
 	},
 	"engines": {
 		"node": ">=18"
