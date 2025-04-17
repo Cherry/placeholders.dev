@@ -1,5 +1,6 @@
 // Heavily based on https://github.com/cloudfour/simple-svg-placeholder/tree/main
 // License: MIT
+import { escapeXml } from './utils';
 
 export type Options = {
 	width?: number;
@@ -39,6 +40,7 @@ export function simpleSvgPlaceholder({
 	textWrap = false,
 	padding = '0.5em',
 }: Options = {}) {
+	const safeText = escapeXml(text);
 	let content = '';
 
 	let style = '';
@@ -69,10 +71,10 @@ export function simpleSvgPlaceholder({
 			padding: ${padding};
 			text-align: center;
 			width: 100%;
-		">${text}</div>
+		">${safeText}</div>
 	  </foreignObject>`;
 	} else {
-		content = `<text fill="${textColor}" font-family="${fontFamily}" font-size="${fontSize}" dy="${dy}" font-weight="${fontWeight}" x="50%" y="50%" text-anchor="middle">${text}</text>`;
+		content = `<text fill="${textColor}" font-family="${fontFamily}" font-size="${fontSize}" dy="${dy}" font-weight="${fontWeight}" x="50%" y="50%" text-anchor="middle">${safeText}</text>`;
 	}
 
 	const str = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
@@ -84,8 +86,7 @@ export function simpleSvgPlaceholder({
 	// Thanks to: filamentgroup/directory-encoder
 	const cleaned = str
 		.replaceAll(/[\t\n\r]/gim, '') // Strip newlines and tabs
-		.replaceAll(/\s\s+/g, ' ') // Condense multiple spaces
-		.replaceAll(/'/gim, '\\i'); // Normalize quotes
+		.replaceAll(/\s\s+/g, ' '); // Condense multiple spaces
 
 	if (dataUri) {
 		const encoded = encodeURIComponent(cleaned)

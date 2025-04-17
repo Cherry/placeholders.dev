@@ -112,6 +112,24 @@ describe('Worker', () => {
 				textWrap: true,
 			},
 		],
+		// apostrophes in text
+		[
+			{
+				width: 350,
+				height: 100,
+				text: 'Hello \'World\'',
+				bgColor: '#f7f6f6',
+			},
+		],
+		[
+			{
+				width: 350,
+				height: 100,
+				text: 'Hello \'World\'',
+				bgColor: '#f7f6f6',
+				textWrap: true,
+			},
+		],
 	])('should return accurate svg image with query params %s', async (query) => {
 		const searchParams = new URLSearchParams();
 		for (const key of getKeys(query)) {
