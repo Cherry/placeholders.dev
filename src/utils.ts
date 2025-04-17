@@ -72,3 +72,12 @@ export const availableImageOptions = [
 export function getKeys<T extends object>(obj: T) {
 	return Object.keys(obj) as Array<keyof T>;
 }
+
+export function escapeXml(str: string): string {
+	return str
+		.replaceAll('&', '&amp;')
+		.replaceAll('<', '&lt;')
+		.replaceAll('>', '&gt;')
+		.replaceAll('\'', '&apos;')
+		.replaceAll('"', '&quot;');
+}
