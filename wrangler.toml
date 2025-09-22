@@ -31,3 +31,6 @@ analytics_engine_datasets = [
 
 [env.production.observability]
 enabled = true
+
+[env.production.observability.traces]
+enabled = true
