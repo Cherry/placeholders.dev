@@ -1,13 +1,13 @@
 import { writeDataPoint } from './analytics';
-import { sanitizeNumber, sanitizers } from './sanitizers';
+import { processOption, sanitizeNumber, sanitizers } from './sanitizers';
 import { type Options, simpleSvgPlaceholder } from './simple-svg-placeholder';
 import { type Env } from './types';
 import { addHeaders } from './utils';
 import {
 	PoPsRewriter,
-	availableImageOptions,
-	cacheTtl,
-	filesRegex,
+	errorCacheHeader,
+	imageCacheHeader,
+	isStaticFile,
 } from './utils';
 
 async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
@@ -51,8 +51,8 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 			// or if it's /350x150, then set both height and width
 			const size = baseURL.replace('/', '');
 			const sizeParts = size.split('x');
-			const width = sanitizeNumber(Number.parseInt(sizeParts[0], 10));
-			const height = sizeParts[1] ? sanitizeNumber(Number.parseInt(sizeParts[1], 10)) : null;
+			const width = sanitizeNumber(sizeParts[0]);
+			const height = sizeParts[1] ? sanitizeNumber(sizeParts[1]) : null;
 			if (height && width) {
 				imageOptions.width = width;
 				imageOptions.height = height;
@@ -62,22 +62,18 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 			}
 		}
 		// options that can be overwritten via query
-		for (const key of availableImageOptions) {
-			if (url.searchParams.has(key)) {
-				const rawValue = url.searchParams.get(key);
-				if (!rawValue) { continue; }
-				let value;
-				if (key in sanitizers) {
-					value = sanitizers[key](rawValue);
-				} else {
-					value = url.searchParams.get(key);
-				}
-				if (value) {
-					// @ts-expect-error TODO: better type sanitizers
-					imageOptions[key] = value;
-				}
-			}
-		}
+		processOption(imageOptions, 'width', url.searchParams.get('width'), sanitizers.width);
+		processOption(imageOptions, 'height', url.searchParams.get('height'), sanitizers.height);
+		processOption(imageOptions, 'text', url.searchParams.get('text'), sanitizers.text);
+		processOption(imageOptions, 'dy', url.searchParams.get('dy'), sanitizers.dy);
+		processOption(imageOptions, 'fontFamily', url.searchParams.get('fontFamily'), sanitizers.fontFamily);
+		processOption(imageOptions, 'fontWeight', url.searchParams.get('fontWeight'), sanitizers.fontWeight);
+		processOption(imageOptions, 'fontSize', url.searchParams.get('fontSize'), sanitizers.fontSize);
+		processOption(imageOptions, 'bgColor', url.searchParams.get('bgColor'), sanitizers.bgColor);
+		processOption(imageOptions, 'textColor', url.searchParams.get('textColor'), sanitizers.textColor);
+		processOption(imageOptions, 'darkBgColor', url.searchParams.get('darkBgColor'), sanitizers.darkBgColor);
+		processOption(imageOptions, 'darkTextColor', url.searchParams.get('darkTextColor'), sanitizers.darkTextColor);
+		processOption(imageOptions, 'textWrap', url.searchParams.get('textWrap'), sanitizers.textWrap);
 		response = new Response(simpleSvgPlaceholder(imageOptions), {
 			headers: {
 				'content-type': 'image/svg+xml; charset=utf-8',
@@ -87,10 +83,10 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 
 		// set cache header on 200 response
 		if (response.status === 200) {
-			response.headers.set('Cache-Control', 'public, max-age=' + cacheTtl);
+			response.headers.set('Cache-Control', imageCacheHeader);
 		} else {
 			// only cache other things for 5 minutes (errors, 404s, etc.)
-			response.headers.set('Cache-Control', 'public, max-age=300');
+			response.headers.set('Cache-Control', errorCacheHeader);
 		}
 
 		ctx.waitUntil(cache.put(url, response.clone())); // store in cache
@@ -107,7 +103,7 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 			bypassCache: false,
 		},
 	};
-	if (filesRegex.test(url.pathname)) {
+	if (isStaticFile(url.pathname)) {
 		options.cacheControl.edgeTTL = 60 * 60 * 24 * 30; // 30 days
 		options.cacheControl.browserTTL = 60 * 60 * 24 * 30; // 30 days
 	}
@@ -129,18 +125,18 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 	// set cache headers
 	asset.headers.set('Cache-Control', `public, max-age=${options.cacheControl.browserTTL}`);
 
-	// append security headers to HTML
-	if (asset?.headers?.has?.('content-type') && asset.headers.get('content-type')?.includes?.('text/html')) {
-		// we're about to manipualte headers, so need to recreaete the response to be mutable
+	// only process HTML with security headers and HTMLRewriter
+	const isHtml = asset.headers.get('content-type')?.includes('text/html');
+	if (isHtml) {
 		// set security headers on html pages
 		for (const name of Object.keys(addHeaders)) {
 			const keyedName = name as keyof typeof addHeaders;
 			asset.headers.set(name, addHeaders[keyedName]);
 		}
+		return new HTMLRewriter().on('*', new PoPsRewriter()).transform(asset);
 	}
 
-	const transformed = new HTMLRewriter().on('*', new PoPsRewriter()).transform(asset);
-	return transformed;
+	return asset;
 }
 
 export default {

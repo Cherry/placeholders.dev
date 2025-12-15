@@ -33,225 +33,335 @@
 	<link rel="manifest" href="/site.webmanifest">
 	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1b1c1c">
 	<meta name="msapplication-TileColor" content="#00aba9">
-	<meta name="theme-color" content="#dddddd">
+	<meta name="theme-color" content="#ffffff">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
 	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=optional" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 	<style>
-		html {
-			box-sizing: border-box;
-			font-size: 14px;
-			font-family: 'Open Sans', sans-serif;
+		:root {
+			--bg: #ffffff;
+			--bg-secondary: #f8f9fa;
+			--text: #1a1a2e;
+			--text-muted: #6b7280;
+			--border: #e5e7eb;
+			--code-bg: #1a1a2e;
+			--code-text: #e5e7eb;
+			--accent: #3b82f6;
 		}
 
-		*, *:before, *:after {
-			box-sizing: inherit;
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--bg: #0f0f14;
+				--bg-secondary: #1a1a24;
+				--text: #f1f1f3;
+				--text-muted: #9ca3af;
+				--border: #2d2d3a;
+				--code-bg: #1e1e2e;
+				--code-text: #e5e7eb;
+				--accent: #60a5fa;
+			}
+		}
+
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		html {
+			font-size: 16px;
 		}
 
 		body {
-			background: #EDEDED;
-			color: #4B5658;
+			font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+			background: var(--bg);
+			color: var(--text);
+			line-height: 1.6;
+			-webkit-font-smoothing: antialiased;
+			overflow-x: hidden;
 		}
 
-		body, h1, h2, h3, h4, h5, h6, p, ol, ul {
-			margin: 0;
-			padding: 0;
-			font-weight: normal;
+		main {
+			max-width: 720px;
+			margin: 0 auto;
+			padding: 4rem 1.5rem;
 		}
 
-		ol, ul {
-			list-style: none;
+		.hero {
+			text-align: center;
+			margin-bottom: 3rem;
 		}
 
-		img {
-			max-width: 100%;
+		.logo {
+			font-size: 2.5rem;
+			font-weight: 700;
+			letter-spacing: -0.03em;
+			margin-bottom: 0.75rem;
+		}
+
+		h1 {
+			font-size: 1.125rem;
+			font-weight: 400;
+			color: var(--text-muted);
+			max-width: 480px;
+			margin: 0 auto;
+		}
+
+		.examples {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			justify-content: center;
+			margin: 2.5rem calc(-50vw + 50%);
+			width: 100vw;
+			padding: 0 1.5rem;
+		}
+
+		.examples img {
+			border-radius: 6px;
+			max-width: calc(100vw - 3rem);
 			height: auto;
 		}
 
+		.examples img.full-width {
+			flex-basis: 100%;
+			max-width: min(calc(1040px + 1.5rem), calc(100vw - 3rem));
+		}
+
+		section {
+			margin-bottom: 2.5rem;
+		}
+
+		h2 {
+			font-size: 1.25rem;
+			font-weight: 600;
+			margin-bottom: 1rem;
+			letter-spacing: -0.01em;
+		}
+
+		h3 {
+			font-size: 1rem;
+			font-weight: 600;
+			margin: 2rem 0 1rem;
+			letter-spacing: -0.01em;
+		}
+
+		p {
+			color: var(--text-muted);
+			margin-bottom: 1rem;
+		}
+
+		a {
+			color: var(--accent);
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		pre, code {
+			font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+			font-size: 0.875rem;
+		}
+
+		code {
+			background: var(--bg-secondary);
+			padding: 0.15em 0.4em;
+			border-radius: 4px;
+			border: 1px solid var(--border);
+		}
+
 		pre {
+			background: var(--code-bg);
+			color: var(--code-text);
+			padding: 1rem;
+			border-radius: 8px;
+			overflow-x: auto;
 			white-space: pre-wrap;
 			word-break: break-all;
 		}
 
-		main {
+		pre code {
+			background: none;
+			border: none;
+			padding: 0;
+			color: inherit;
+		}
+
+		.url-examples {
 			display: flex;
 			flex-direction: column;
-			min-height: 100vh;
-			padding: 0 30px;
-			text-align: center;
+			gap: 1rem;
 		}
 
-		.intro {
-			font-size: 3.75em;
-			font-weight: 600;
+		.url-example {
+			background: var(--bg-secondary);
+			border: 1px solid var(--border);
+			border-radius: 8px;
+			padding: 1rem;
 		}
 
-		.tagline {
-			font-size: 1.5rem;
-			margin: 1.5rem 0;
-			font-weight: 100;
+		.url-example-label {
+			font-size: 0.75rem;
+			font-weight: 500;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: var(--text-muted);
+			margin-bottom: 0.5rem;
 		}
 
-		.documentation {
-			text-align: left;
-			margin: 0 auto;
-			max-width: 75%;
+		.url-example pre {
+			margin: 0;
 		}
 
-		.documentation > p {
-			margin: 1em 0;
+		dl {
+			display: grid;
+			gap: 1.25rem;
 		}
 
-		.documentation input {
-			width: 100%;
-			height: 2em;
-			font-size: 1em;
-			font-family: monospace;
+		dt {
+			font-weight: 500;
 		}
 
-		.documentation > ul {
-			margin: 1em 0;
+		dd {
+			color: var(--text-muted);
+			margin-top: 0.25rem;
 		}
 
-		.examples {
-			margin-bottom: 1em;
+		.social {
+			display: flex;
+			justify-content: center;
+			gap: 1rem;
+			margin-top: 3rem;
+			padding-top: 2rem;
+			border-top: 1px solid var(--border);
 		}
 
-		.icons-social i {
-			font-size: 3em;
-			padding: 10px;
+		.social a {
+			color: var(--text-muted);
+			transition: color 0.15s;
 		}
 
-		.icons-social a {
-			color: #4B5658;
+		.social a:hover {
+			color: var(--text);
+			text-decoration: none;
 		}
 
-		.icons-social a svg path{
-			fill: #4B5658;
+		.social svg {
+			width: 24px;
+			height: 24px;
+			display: block;
 		}
 
-		@media (prefers-color-scheme: dark) {
-			body {
-				background: #1b1c1c;
-				color: #dfdfde;
+		@media (max-width: 640px) {
+			main {
+				padding: 2.5rem 1rem;
 			}
 
-			.icons-social a {
-				color: #dfdfde;
+			.logo {
+				font-size: 2rem;
 			}
 
-			.icons-social a svg path{
-				fill: #dfdfde;
-			}
-
-			a {
-				color: #a9a8a8;
-			}
-		}
-
-		@media (min-width: 576px) {
-			html {
-				font-size: 14px;
-			}
-		}
-
-		@media (min-width: 768px) {
-			html {
-				font-size: 16px;
-			}
-		}
-
-		@media (min-width: 992px) {
-			html {
-				font-size: 18px;
-			}
-		}
-
-		@media (min-width: 1200px) {
-			html {
-				font-size: 20px;
-			}
-		}
-
-		@media (max-width: 768px) {
-			.intro {
-				font-size: 2.5em;
-			}
-
-			.documentation {
-				max-width: 100%;
+			h1 {
+				font-size: 1rem;
 			}
 		}
 	</style>
 </head>
 <body>
-	<!-- Based on https://github.com/flexdinesh/dev-landing-page. MIT License -->
 	<main>
-		<div class="intro">placeholders.dev</div>
-		<h1 class="tagline">Generate super-fast placeholder images in <span class="edgeLocations">330</span>+ edge locations, powered by Cloudflare Workers</h1>
+		<header class="hero">
+			<div class="logo">placeholders.dev</div>
+			<h1>Generate super-fast placeholder images in <span class="edgeLocations">330</span>+ edge locations, powered by Cloudflare Workers</h1>
+		</header>
+
 		<div class="examples">
-			<img src="https://images.placeholders.dev/350x100" width="350" height="150" alt="350x150 placeholder image">
+			<img src="https://images.placeholders.dev/350x100" width="350" height="100" alt="350x100 placeholder image">
 			<img src="https://images.placeholders.dev/?width=200&height=100&bgColor=%23000&textColor=rgba(255,255,255,0.5)" width="200" height="100" alt="200x100 placeholder image">
 			<img src="https://images.placeholders.dev/?width=140&height=100&bgColor=%23313131&textColor=%23dfdfde" width="140" height="100" alt="140x100 placeholder image">
 			<img src="https://images.placeholders.dev/?width=350&height=100&text=placeholders.dev" width="350" height="100" alt="350x100 placeholder image">
-			<img src="https://images.placeholders.dev/?width=1055&height=100&text=Hello World&bgColor=%23434343&textColor=%23dfdfde" width="1055" height="100" alt="1055x100 placeholder image">
+			<img src="https://images.placeholders.dev/?width=1055&height=100&text=Hello World&bgColor=%23434343&textColor=%23dfdfde" width="1055" height="100" alt="1055x100 placeholder image" class="full-width">
 		</div>
-		<div class="documentation">
-			<h2>Information</h2>
-			<p>placeholders.dev generates custom placeholder images on the fly, such as the examples above. All of these images are generated on Cloudflare's Edge, at <span class="edgeLocations">330</span>+ locations, ensuring the best possible performance for all of your users. All images are cached for lengthy periods of time.</p>
 
-			<h3>Example URLs</h4>
-			<ul>
-				<li>
-					Basic url path: <pre>https://images.placeholders.dev/350</pre>
-				</li>
-				<li>
-					Full url path: <pre>https://images.placeholders.dev/350x150</pre>
-				</li>
-				<li>
-					Full query params: <pre>https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%236d6e71</pre>
-				</li>
-			</ul>
+		<section>
+			<h2>About</h2>
+			<p>placeholders.dev generates custom placeholder images on the fly. All images are generated on Cloudflare's edge network at <span class="edgeLocations">330</span>+ locations worldwide, ensuring optimal performance. Images are cached for extended periods.</p>
+		</section>
 
-			<h3>Available API Options</h3>
+		<section>
+			<h3>Example URLs</h3>
+			<div class="url-examples">
+				<div class="url-example">
+					<div class="url-example-label">Basic path</div>
+					<pre><code>https://images.placeholders.dev/350</code></pre>
+				</div>
+				<div class="url-example">
+					<div class="url-example-label">Width × Height</div>
+					<pre><code>https://images.placeholders.dev/350x150</code></pre>
+				</div>
+				<div class="url-example">
+					<div class="url-example-label">Query parameters</div>
+					<pre><code>https://images.placeholders.dev/?width=1055&height=100&text=Hello&bgColor=%23f7f6f6&textColor=%236d6e71</code></pre>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h3>API Options</h3>
 			<dl>
-				<dt><code>width</code></dt>
-				<dd>Width of generated image. Defaults to <code>300</code>.</dd>
-
-				<dt><code>height</code></dt>
-				<dd>Height of generated image. Defaults to <code>150</code>.</dd>
-
-				<dt><code>text</code></dt>
-				<dd>Text to display on generated image. Defaults to the image dimensions.</dd>
-
-				<dt><code>fontFamily</code></dt>
-				<dd>Font to use for the text. Defaults to <code>sans-serif</code>.</dd>
-
-				<dt><code>fontWeight</code></dt>
-				<dd>Font weight to use for the text. Defaults to <code>bold</code>.</dd>
-
-				<dt><code>fontSize</code></dt>
-				<dd>Font size to use for the text. Defaults to 20% of the shortest image dimension, rounded down.</dd>
-
-				<dt><code>dy</code></dt>
-				<dd>Adjustment applied to <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dy" target="_blank" rel="noopener">the <code>dy</code> attribute</a> of the text element to appear vertically centered. Defaults to 35% of the font size.</dd>
-
-				<dt><code>bgColor</code></dt>
-				<dd>Background color of the image. Defaults to <code>#ddd</code></dd>
-
-				<dt><code>textColor</code></dt>
-				<dd>Color of the text. For transparency, use an <code>rgba</code> or <code>hsla</code> value. Defaults to <code>rgba(0,0,0,0.5)</code></dd>
-
-				<dt><code>textWrap</code></dt>
-				<dd>Wrap text to fit within the image (to best ability). Will not alter font size, so especially long strings may still appear outside of the image. Defaults to <code>false</code></dd>
+				<div>
+					<dt><code>width</code></dt>
+					<dd>Width of generated image. Defaults to <code>300</code>.</dd>
+				</div>
+				<div>
+					<dt><code>height</code></dt>
+					<dd>Height of generated image. Defaults to <code>150</code>.</dd>
+				</div>
+				<div>
+					<dt><code>text</code></dt>
+					<dd>Text to display on generated image. Defaults to the image dimensions.</dd>
+				</div>
+				<div>
+					<dt><code>fontFamily</code></dt>
+					<dd>Font to use for the text. Defaults to <code>sans-serif</code>.</dd>
+				</div>
+				<div>
+					<dt><code>fontWeight</code></dt>
+					<dd>Font weight to use for the text. Defaults to <code>bold</code>.</dd>
+				</div>
+				<div>
+					<dt><code>fontSize</code></dt>
+					<dd>Font size to use for the text. Defaults to 20% of the shortest image dimension, rounded down.</dd>
+				</div>
+				<div>
+					<dt><code>dy</code></dt>
+					<dd>Adjustment applied to <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dy" target="_blank" rel="noopener">the <code>dy</code> attribute</a> of the text element to appear vertically centered. Defaults to 35% of the font size.</dd>
+				</div>
+				<div>
+					<dt><code>bgColor</code></dt>
+					<dd>Background color of the image. Defaults to <code>#ddd</code>.</dd>
+				</div>
+				<div>
+					<dt><code>textColor</code></dt>
+					<dd>Color of the text. For transparency, use an <code>rgba</code> or <code>hsla</code> value. Defaults to <code>rgba(0,0,0,0.5)</code>.</dd>
+				</div>
+				<div>
+					<dt><code>textWrap</code></dt>
+					<dd>Wrap text to fit within the image. Will not alter font size, so long strings may still overflow. Defaults to <code>false</code>.</dd>
+				</div>
 			</dl>
-		</div>
-		<div class="icons-social">
-			<a target="_blank" href="https://github.com/Cherry/placeholders.dev" rel="noopener"><i class="fab fa-github" role="img" aria-label="placeholders.dev GitHub"></i></a>
-			<a target="_blank" href="https://twitter.com/CherryJimbo" rel="noopener"><i class="fab fa-twitter" role="img" aria-label="James Ross Twitter"></i></a>
-		</div>
+		</section>
+
+		<footer class="social">
+			<a href="https://github.com/Cherry/placeholders.dev" target="_blank" rel="noopener" aria-label="GitHub">
+				<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+			</a>
+			<a href="https://twitter.com/CherryJimbo" target="_blank" rel="noopener" aria-label="Twitter">
+				<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+			</a>
+		</footer>
 	</main>
 </body>
 </html>

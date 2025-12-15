@@ -1,21 +1,25 @@
 import sanitizeHtml from 'sanitize-html';
 import validateColor from 'validate-color';
 
-export function sanitizeNumber(input: string | number) {
-	const isValid = !/^\s*$/.test(String(input).trim()) && !Number.isNaN(Number(input));
+import type { Options } from './simple-svg-placeholder';
+import type { availableImageOptions } from './utils';
+
+export function sanitizeNumber(input: string | number): number | null {
+	const str = String(input);
+	const isValid = !/^\s*$/.test(str.trim()) && !Number.isNaN(Number(str));
 	if (isValid) {
-		return Number(input);
+		return Number(str);
 	}
 	return null;
 }
 
-export function sanitizeString(input: string) {
+export function sanitizeString(input: string): string {
 	let value = sanitizeHtml(input, { allowedTags: [], allowedAttributes: {} });
 	value = value.replaceAll(/["<>]+/g, '');
 	return value;
 }
 
-export function sanitizeColor(input: string) {
+export function sanitizeColor(input: string): string | null {
 	const value = sanitizeString(input); // first remove any HTML
 	const isValidColor = validateColor(value);
 	if (isValidColor) {
@@ -24,27 +28,33 @@ export function sanitizeColor(input: string) {
 	return null;
 }
 
-export function sanitizeStringForCss(input: string) {
+export function sanitizeStringForCss(input: string): string {
 	let value = sanitizeString(input);
 	value = value.replaceAll(/[:;]+/g, '');
 	return value;
 }
 
-export function sanitizeBoolean(input: string) {
-	if (String(input).toLowerCase() === 'true') {
+export function sanitizeBoolean(input: string | number | boolean): boolean {
+	const str = String(input);
+	if (str.toLowerCase() === 'true') {
 		return true;
 	}
-	if (String(input) === '1') {
+	if (str === '1') {
 		return true;
 	}
 	return false;
 }
 
-export const sanitizers = {
+// map each available option to its sanitizer, ensuring return types match Options
+type SanitizersType = {
+	[K in typeof availableImageOptions[number]]: (input: string) => NonNullable<Options[K]> | null;
+};
+
+export const sanitizers: SanitizersType = {
 	width: sanitizeNumber,
 	height: sanitizeNumber,
 	text: sanitizeString,
-	dy: sanitizeString,
+	dy: sanitizeNumber,
 	fontFamily: sanitizeStringForCss,
 	fontWeight: sanitizeNumber,
 	fontSize: sanitizeNumber,
@@ -54,3 +64,17 @@ export const sanitizers = {
 	darkTextColor: sanitizeColor,
 	textWrap: sanitizeBoolean,
 };
+
+// processes a single option with full type checking
+export function processOption<K extends keyof Options>(
+	options: Options,
+	key: K,
+	rawValue: string | null,
+	sanitizer: (value: string) => NonNullable<Options[K]> | null,
+): void {
+	if (!rawValue) { return; }
+	const value = sanitizer(rawValue);
+	if (value !== null) {
+		options[key] = value;
+	}
+}

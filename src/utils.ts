@@ -37,7 +37,72 @@ export const addHeaders = {
 
 /* caching */
 export const cacheTtl = 60 * 60 * 24 * 90; // 90 days
-export const filesRegex = /(.*\.(ac3|avi|bmp|br|bz2|css|cue|dat|doc|docx|dts|eot|exe|flv|gif|gz|htm|html|ico|img|iso|jpeg|jpg|js|json|map|mkv|mp3|mp4|mpeg|mpg|ogg|pdf|png|ppt|pptx|qt|rar|rm|svg|swf|tar|tgz|ttf|txt|wav|webp|webm|webmanifest|woff|woff2|xls|xlsx|xml|zip))$/;
+export const imageCacheHeader = `public, max-age=${cacheTtl}`;
+export const errorCacheHeader = 'public, max-age=300';
+const staticFileExtensions = new Set([
+	'ac3',
+	'avi',
+	'bmp',
+	'br',
+	'bz2',
+	'css',
+	'cue',
+	'dat',
+	'doc',
+	'docx',
+	'dts',
+	'eot',
+	'exe',
+	'flv',
+	'gif',
+	'gz',
+	'htm',
+	'html',
+	'ico',
+	'img',
+	'iso',
+	'jpeg',
+	'jpg',
+	'js',
+	'json',
+	'map',
+	'mkv',
+	'mp3',
+	'mp4',
+	'mpeg',
+	'mpg',
+	'ogg',
+	'pdf',
+	'png',
+	'ppt',
+	'pptx',
+	'qt',
+	'rar',
+	'rm',
+	'svg',
+	'swf',
+	'tar',
+	'tgz',
+	'ttf',
+	'txt',
+	'wav',
+	'webp',
+	'webm',
+	'webmanifest',
+	'woff',
+	'woff2',
+	'xls',
+	'xlsx',
+	'xml',
+	'zip',
+]);
+
+export function isStaticFile(pathname: string): boolean {
+	const lastDot = pathname.lastIndexOf('.');
+	if (lastDot === -1) { return false; }
+	const ext = pathname.slice(lastDot + 1).toLowerCase();
+	return staticFileExtensions.has(ext);
+}
 
 /* HTML rewriter for more accurate count of Cloudflare PoPs */
 export const CloudflarePoPs = PoPs.cloudflare.code.length;
@@ -73,11 +138,15 @@ export function getKeys<T extends object>(obj: T) {
 	return Object.keys(obj) as Array<keyof T>;
 }
 
+const xmlEscapeMap: Record<string, string> = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'\'': '&apos;',
+	'"': '&quot;',
+};
+const xmlEscapeRegex = /["&'<>]/g;
+
 export function escapeXml(str: string): string {
-	return str
-		.replaceAll('&', '&amp;')
-		.replaceAll('<', '&lt;')
-		.replaceAll('>', '&gt;')
-		.replaceAll('\'', '&apos;')
-		.replaceAll('"', '&quot;');
+	return str.replaceAll(xmlEscapeRegex, ch => xmlEscapeMap[ch]);
 }
