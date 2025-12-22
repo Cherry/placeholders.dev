@@ -124,8 +124,15 @@
 			height: auto;
 		}
 
-		.examples img.full-width {
+		.examples::before {
+			content: '';
 			flex-basis: 100%;
+			height: 0;
+			order: 1;
+		}
+
+		.examples img.full-width {
+			order: 2;
 			max-width: min(calc(1040px + 1.5rem), calc(100vw - 3rem));
 		}
 
