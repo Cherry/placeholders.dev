@@ -108,7 +108,7 @@ async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 		options.cacheControl.browserTTL = 60 * 60 * 24 * 30; // 30 days
 	}
 
-	let asset = null;
+	let asset;
 	try {
 		asset = await env.ASSETS.fetch(request);
 	} catch (err) {
