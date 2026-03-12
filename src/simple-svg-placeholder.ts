@@ -41,7 +41,7 @@ export function simpleSvgPlaceholder({
 	padding = '0.5em',
 }: Options = {}) {
 	const safeText = escapeXml(text);
-	let content = '';
+	let content;
 
 	let style = '';
 
