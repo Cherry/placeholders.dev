@@ -1,4 +1,5 @@
-import { SELF, createExecutionContext, env } from 'cloudflare:test';
+import { createExecutionContext } from 'cloudflare:test';
+import { env, exports } from 'cloudflare:workers';
 import {
 	describe,
 	expect,
@@ -11,7 +12,7 @@ import { getKeys } from '../src/utils';
 
 describe('Worker', () => {
 	it('should return html landing page', async () => {
-		const resp = await SELF.fetch('http://example.com');
+		const resp = await exports.default.fetch('http://example.com');
 		expect(resp.status).toBe(200);
 
 		// check if html is returned
@@ -25,7 +26,7 @@ describe('Worker', () => {
 	});
 
 	it('should set right headers for static assets', async () => {
-		const resp = await SELF.fetch('http://example.com/share.png');
+		const resp = await exports.default.fetch('http://example.com/share.png');
 		expect(resp.status).toBe(200);
 
 		const headers = resp.headers;
