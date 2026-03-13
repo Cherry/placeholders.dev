@@ -29,7 +29,7 @@
 	},
 	"devDependencies": {
 		"@adaptivelink/pops": "0.5.8",
-		"@cloudflare/vitest-pool-workers": "0.12.21",
+		"@cloudflare/vitest-pool-workers": "0.13.0",
 		"@cloudflare/workers-types": "4.20260312.1",
 		"@nodecraft/eslint-config": "47.0.2",
 		"@stylistic/eslint-plugin": "5.10.0",
@@ -43,7 +43,7 @@
 		"sanitize-html": "2.17.1",
 		"typescript": "5.9.3",
 		"validate-color": "2.2.4",
-		"vitest": "3.2.4",
+		"vitest": "4.1.0",
 		"wrangler": "4.72.0"
 	},
 	"engines": {
