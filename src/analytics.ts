@@ -3,7 +3,9 @@ type AnalyticsData = {
 };
 
 export function writeDataPoint(analytics: AnalyticsEngineDataset | undefined, request: Request, data?: AnalyticsData) {
-	if (!analytics) { return; }
+	if (!analytics) {
+		return;
+	}
 	/* ORDER HERE IS VERY IMPORTANT. IF ANYTHING CHANGES, MUST BE APPENDED */
 	const reportData = {
 		blobs: [

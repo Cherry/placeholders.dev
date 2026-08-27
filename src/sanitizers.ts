@@ -72,7 +72,9 @@ export function processOption<K extends keyof Options>(
 	rawValue: string | null,
 	sanitizer: (value: string) => NonNullable<Options[K]> | null,
 ): void {
-	if (!rawValue) { return; }
+	if (!rawValue) {
+		return;
+	}
 	const value = sanitizer(rawValue);
 	if (value !== null) {
 		options[key] = value;

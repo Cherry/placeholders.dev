@@ -42,6 +42,15 @@ This project makes use of Cloudflare Workers, and Cloudflare Workers Static Asse
 - `textWrap`
 	- Wrap text to fit within the image (to best ability). Will not alter font size, so especially long strings may still appear outside of the image. Defaults to `false`.
 
+### WebMCP
+
+While [placeholders.dev](https://placeholders.dev) is open, it registers tools with the visitor's AI agent via the draft [WebMCP](https://webmachinelearning.github.io/webmcp/) `navigator.modelContext` API, so an agent can build placeholder URLs from a plain-language request without any setup. Tools live in [`public/webmcp.js`](public/webmcp.js) and are pure URL work, so no requests leave the browser.
+
+- `generate_placeholder_image_url`
+	- Builds a validated image URL from any of the API options above, and returns HTML and Markdown snippets alongside it. Values the image API would silently drop, such as an unparseable color or a `fontWeight` keyword, are rejected with an explanation instead. Also renders the result on the page so the visitor can see what the agent produced.
+- `explain_placeholder_image_url`
+	- Breaks an existing placeholders.dev URL into the options it uses, resolves the defaults the image API would apply, and flags query parameters it ignores.
+
 ## Dev
 
 - `npm run start:dev` (this will use `wrangler dev` to locally start the Cloudflare Worker for testing)

@@ -28,23 +28,23 @@
 		"test:watch": "vitest watch"
 	},
 	"devDependencies": {
-		"@adaptivelink/pops": "0.5.8",
-		"@cloudflare/vitest-pool-workers": "0.13.0",
-		"@cloudflare/workers-types": "4.20260313.1",
-		"@nodecraft/eslint-config": "47.0.2",
+		"@adaptivelink/pops": "0.6.1",
+		"@cloudflare/vitest-pool-workers": "0.22.0",
+		"@cloudflare/workers-types": "5.20260820.1",
+		"@nodecraft/eslint-config": "51.0.0",
 		"@stylistic/eslint-plugin": "5.10.0",
 		"@types/sanitize-html": "2.16.1",
-		"eslint": "10.0.3",
+		"eslint": "10.8.1",
 		"eslint-plugin-import-newlines": "2.0.0",
-		"eslint-plugin-import-x": "4.16.2",
-		"eslint-plugin-n": "17.24.0",
-		"eslint-plugin-unicorn": "63.0.0",
-		"typescript-eslint": "8.57.0",
-		"sanitize-html": "2.17.1",
-		"typescript": "5.9.3",
+		"eslint-plugin-import-x": "4.17.1",
+		"eslint-plugin-n": "18.3.0",
+		"eslint-plugin-unicorn": "73.0.0",
+		"typescript-eslint": "8.67.0",
+		"sanitize-html": "2.17.7",
+		"typescript": "6.0.3",
 		"validate-color": "2.2.4",
-		"vitest": "4.1.0",
-		"wrangler": "4.73.0"
+		"vitest": "4.1.11",
+		"wrangler": "4.124.0"
 	},
 	"engines": {
 		"node": ">=18"

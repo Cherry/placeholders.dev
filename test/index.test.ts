@@ -12,7 +12,7 @@ import { getKeys } from '../src/utils';
 
 describe('Worker', () => {
 	it('should return html landing page', async () => {
-		const resp = await exports.default.fetch('http://example.com');
+		const resp = await exports.default.fetch('https://example.com');
 		expect(resp.status).toBe(200);
 
 		// check if html is returned
@@ -26,7 +26,7 @@ describe('Worker', () => {
 	});
 
 	it('should set right headers for static assets', async () => {
-		const resp = await exports.default.fetch('http://example.com/share.png');
+		const resp = await exports.default.fetch('https://example.com/share.png');
 		expect(resp.status).toBe(200);
 
 		const headers = resp.headers;
@@ -35,7 +35,7 @@ describe('Worker', () => {
 	});
 
 	it('should sanitize for XSS', async () => {
-		const req = new Request('https://example.com/api/?width=350&height=100&text=Hello%20World&bgColor=%22%3E%3Cscript%3Ealert(%22XSS%22);%3C/script%3E', { method: 'GET' });
+		const req = new Request('https://example.com/api/?width=350&height=100&text=Hello%20World&bgColor=%22%3E%3Cscript%3Ealert(%22XSS%22);%3C/script%3E');
 		const ctx = createExecutionContext();
 		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
@@ -45,7 +45,7 @@ describe('Worker', () => {
 	});
 
 	it('should sanitize for CSS prop injection', async () => {
-		const req = new Request('https://example.com/api/?width=450&height=450&text=James&fontFamily=test;background:url(https://avatars.githubusercontent.com/u/856748?v=4)&textWrap=true', { method: 'GET' });
+		const req = new Request('https://example.com/api/?width=450&height=450&text=James&fontFamily=test;background:url(https://avatars.githubusercontent.com/u/856748?v=4)&textWrap=true');
 		const ctx = createExecutionContext();
 		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
@@ -146,7 +146,7 @@ describe('Worker', () => {
 	});
 
 	it('should return accurate svg image with simple path', async () => {
-		const req = new Request('https://example.com/api/350', { method: 'GET' });
+		const req = new Request('https://example.com/api/350');
 		const ctx = createExecutionContext();
 		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
@@ -156,7 +156,7 @@ describe('Worker', () => {
 	});
 
 	it('should return accurate svg image with full url path', async () => {
-		const req = new Request('https://example.com/api/350x100', { method: 'GET' });
+		const req = new Request('https://example.com/api/350x100');
 		const ctx = createExecutionContext();
 		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
@@ -166,7 +166,7 @@ describe('Worker', () => {
 	});
 
 	it('should return accurate svg image with url path and query params', async () => {
-		const req = new Request('https://example.com/api/350x100?bgColor=%23f7f6f6&text=Hello%20World', { method: 'GET' });
+		const req = new Request('https://example.com/api/350x100?bgColor=%23f7f6f6&text=Hello%20World');
 		const ctx = createExecutionContext();
 		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
@@ -176,7 +176,7 @@ describe('Worker', () => {
 	});
 
 	it('should return accurate svg image with url path and query params overriding', async () => {
-		const req = new Request('https://example.com/api/350x100?width=360&height=200', { method: 'GET' });
+		const req = new Request('https://example.com/api/350x100?width=360&height=200');
 		const ctx = createExecutionContext();
 		const resp = await worker.fetch(req, env, ctx);
 		expect(resp.status).toBe(200);
