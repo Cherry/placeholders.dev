@@ -99,7 +99,9 @@ const staticFileExtensions = new Set([
 
 export function isStaticFile(pathname: string): boolean {
 	const lastDot = pathname.lastIndexOf('.');
-	if (lastDot === -1) { return false; }
+	if (lastDot === -1) {
+		return false;
+	}
 	const ext = pathname.slice(lastDot + 1).toLowerCase();
 	return staticFileExtensions.has(ext);
 }

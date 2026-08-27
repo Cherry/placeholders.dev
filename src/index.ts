@@ -12,6 +12,7 @@ import {
 
 async function handleEvent(request: Request, env: Env, ctx: ExecutionContext) {
 	const url = new URL(request.url);
+	// eslint-disable-next-line unicorn/require-array-sort-compare -- URLSearchParams.sort() takes no comparator
 	url.searchParams.sort(); // improve cache-hits by sorting search params
 
 	const cache = caches.default; // Cloudflare edge caching

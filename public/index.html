@@ -237,6 +237,30 @@
 			margin-top: 0.25rem;
 		}
 
+		.prompts {
+			list-style: none;
+			display: grid;
+			gap: 0.5rem;
+			margin-bottom: 1rem;
+		}
+
+		.prompts li {
+			background: var(--bg-secondary);
+			border: 1px solid var(--border);
+			border-radius: 8px;
+			padding: 0.5rem 0.75rem;
+			color: var(--text-muted);
+			font-size: 0.9375rem;
+		}
+
+		#agentPreview img {
+			display: block;
+			border-radius: 6px;
+			max-width: 100%;
+			height: auto;
+			margin-bottom: 0.75rem;
+		}
+
 		.social {
 			display: flex;
 			justify-content: center;
@@ -295,6 +319,21 @@
 		<section>
 			<h2>About</h2>
 			<p>placeholders.dev generates custom placeholder images on the fly. All images are generated on Cloudflare's edge network at <span class="edgeLocations">330</span>+ locations worldwide, ensuring optimal performance. Images are cached for extended periods.</p>
+		</section>
+
+		<section>
+			<h3>Ask your AI agent</h3>
+			<p>This page exposes <a href="https://webmachinelearning.github.io/webmcp/" target="_blank" rel="noopener">WebMCP</a> tools, so a WebMCP-compatible browser agent can build and inspect placeholder URLs for you while you have this page open. Nothing to install, just ask it for what you need:</p>
+			<ul class="prompts">
+				<li>&ldquo;Generate a 1200x630 dark grey social share placeholder that says Hello World&rdquo;</li>
+				<li>&ldquo;Make me a 64x64 avatar placeholder that works in light and dark mode&rdquo;</li>
+				<li>&ldquo;What options does this placeholders.dev URL use?&rdquo;</li>
+			</ul>
+			<div class="url-example" id="agentPreview" hidden>
+				<div class="url-example-label">Latest agent-generated placeholder</div>
+				<img id="agentPreviewImage" alt="" width="300" height="150">
+				<pre><code><a id="agentPreviewUrl" href=""></a></code></pre>
+			</div>
 		</section>
 
 		<section>
@@ -370,5 +409,6 @@
 			</a>
 		</footer>
 	</main>
+	<script type="module" src="/webmcp.js"></script>
 </body>
 </html>
